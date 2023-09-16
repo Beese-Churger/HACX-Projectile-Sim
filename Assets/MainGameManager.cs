@@ -21,6 +21,8 @@ public class MainGameManager : MonoBehaviour
     public Material OriginalWindowMaterial;
     private Window currentlyHoveredWindow;
     private List<Window> SelectedWindows = new List<Window>();
+
+    private int selected = 0;
     public void StartGame()
     {
         CameraAnimator.CrossFade(CameraToMainGameTransition.name, TransitionSpeed);
@@ -40,8 +42,14 @@ public class MainGameManager : MonoBehaviour
             {
                 currentlyHoveredWindow = hitObject.GetComponent<Window>();
                 Renderer renderer = hitObject.GetComponent<Renderer>();
-                if(!currentlyHoveredWindow.isSelected) renderer.material.color = SelectHighlightColor;
-                else if (currentlyHoveredWindow.isSelected) renderer.material.color = DeselectHighlightColor;
+                if (!currentlyHoveredWindow.isSelected)
+                {
+                    renderer.material.color = SelectHighlightColor;
+                }
+                else if (currentlyHoveredWindow.isSelected)
+                {
+                    renderer.material.color = DeselectHighlightColor;
+                }
             }
             else if (currentlyHoveredWindow)
             {
@@ -54,10 +62,11 @@ public class MainGameManager : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            if(currentlyHoveredWindow && !currentlyHoveredWindow.isSelected)
+            if(currentlyHoveredWindow && !currentlyHoveredWindow.isSelected && selected < 2)
             {
                 currentlyHoveredWindow.isSelected = true;
                 currentlyHoveredWindow.GetComponent<Renderer>().material.color = selectedColor;
+                selected++;
                 return;
             }
             else if(currentlyHoveredWindow && currentlyHoveredWindow.isSelected)
@@ -65,6 +74,7 @@ public class MainGameManager : MonoBehaviour
                 currentlyHoveredWindow.isSelected = false;
                 ResetWindowColor(currentlyHoveredWindow.gameObject);
                 SelectedWindows.Remove(currentlyHoveredWindow);
+                selected--;
                 return;
             }
         }
