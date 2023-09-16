@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MainGameManager : MonoBehaviour
 {
+    public static MainGameManager instance;
+
     [Header("Controllers")]
     public Animator CameraAnimator;
     public AnimationClip CameraToMainGameTransition;
@@ -24,6 +26,16 @@ public class MainGameManager : MonoBehaviour
     private Window currentlyHoveredWindow;
     private List<Window> SelectedWindows = new List<Window>();
 
+    private void Start()
+    {
+        if (!instance)
+        {
+            instance = this;
+        }
+        else
+            Destroy(this);
+
+    }
     public void StartGame()
     {
         CameraAnimator.CrossFade(CameraToMainGameTransition.name, TransitionSpeed);
@@ -89,5 +101,10 @@ public class MainGameManager : MonoBehaviour
     {
         Renderer renderer = window.GetComponent<Renderer>();
         renderer.material.color = OriginalWindowMaterial.color;
+    }
+
+    public List<Window> GetWindows()
+    {
+        return SelectedWindows;
     }
 }
