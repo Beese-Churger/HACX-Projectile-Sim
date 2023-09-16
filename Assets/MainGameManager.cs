@@ -13,6 +13,8 @@ public class MainGameManager : MonoBehaviour
     public GameObject MainMenuUI;
     [Header("MainGameUI")]
     public GameObject MainGameUI;
+    public GameObject SimButton;
+    public GameObject RealButton;
 
     [Header("window")]
     public Color SelectHighlightColor = Color.green;
@@ -22,7 +24,6 @@ public class MainGameManager : MonoBehaviour
     private Window currentlyHoveredWindow;
     private List<Window> SelectedWindows = new List<Window>();
 
-    private int selected = 0;
     public void StartGame()
     {
         CameraAnimator.CrossFade(CameraToMainGameTransition.name, TransitionSpeed);
@@ -55,18 +56,22 @@ public class MainGameManager : MonoBehaviour
             {
                 if(!currentlyHoveredWindow.isSelected) ResetWindowColor(currentlyHoveredWindow.gameObject);
                 currentlyHoveredWindow = null;
-                SelectedWindows.Add(currentlyHoveredWindow);
             }
 
         }
 
         if(Input.GetMouseButtonDown(0))
         {
-            if(currentlyHoveredWindow && !currentlyHoveredWindow.isSelected && selected < 2)
+            if(currentlyHoveredWindow && !currentlyHoveredWindow.isSelected && SelectedWindows.Count < 2)
             {
                 currentlyHoveredWindow.isSelected = true;
                 currentlyHoveredWindow.GetComponent<Renderer>().material.color = selectedColor;
-                selected++;
+                SelectedWindows.Add(currentlyHoveredWindow);
+                if (SelectedWindows.Count == 2)
+                {
+                    SimButton.SetActive(true);
+                    RealButton.SetActive(true);
+                }
                 return;
             }
             else if(currentlyHoveredWindow && currentlyHoveredWindow.isSelected)
@@ -74,7 +79,6 @@ public class MainGameManager : MonoBehaviour
                 currentlyHoveredWindow.isSelected = false;
                 ResetWindowColor(currentlyHoveredWindow.gameObject);
                 SelectedWindows.Remove(currentlyHoveredWindow);
-                selected--;
                 return;
             }
         }
