@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class CalcTrajectory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<Window> SelectedWindows;
+    
+    void CalculatePath()
     {
-        
-    }
+        SelectedWindows = MainGameManager.instance.GetWindows();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
     }
 }
