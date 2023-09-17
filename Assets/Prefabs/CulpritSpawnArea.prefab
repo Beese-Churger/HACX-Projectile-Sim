@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4787422746501831964}
   m_Layer: 0
   m_Name: CulpritSpawnArea
-  m_TagString: Untagged
+  m_TagString: CulpritSpawnArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4787422746501831966}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 1.45, y: -5, z: -4.22}
-  m_LocalScale: {x: 56.203545, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 59.682545, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,3 +99,4 @@ MonoBehaviour:
   numberOfAreas: 15
   DeadzoneRadius: 0.2
   objectToSpawn: {fileID: 243429592876162824, guid: 08d3d1e92d4a9364d8b333da71906823, type: 3}
+  mainGameManager: {fileID: 0}

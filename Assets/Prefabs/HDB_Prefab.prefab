@@ -4963,15 +4963,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: numberOfAreas
-      value: 10
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: DeadzoneRadius
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831965, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831965, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 60.37947
+      objectReference: {fileID: 0}
+    - target: {fileID: 4787422746501831965, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.45
+      value: 3.16
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831965, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: m_LocalPosition.y

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Window
   - Culprit
+  - CulpritSpawnArea
   layers:
   - Default
   - TransparentFX
