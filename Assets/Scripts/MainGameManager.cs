@@ -26,6 +26,19 @@ public class MainGameManager : MonoBehaviour
     private Window currentlyHoveredWindow;
     private List<Window> SelectedWindows = new List<Window>();
 
+    [Header("Positions")]
+    public List<Vector3> CulpritPositions = new List<Vector3>();
+    public List<GameObject> SpawnedCulprits = new List<GameObject>();
+    public void ResetCulprits()
+    {
+        foreach(GameObject GO in SpawnedCulprits)
+        {
+            Destroy(GO);
+        }
+        SpawnedCulprits.Clear();
+        CulpritPositions.Clear();
+    }
+
     private void Start()
     {
         if (!instance)
