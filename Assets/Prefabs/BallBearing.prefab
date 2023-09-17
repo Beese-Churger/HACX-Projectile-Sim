@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1454201081097711205}
   - component: {fileID: 489141831583915556}
   - component: {fileID: 106663636556536878}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BallBearing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.30950397
+        value: 0.039659917
         inSlope: 0
         outSlope: 0
         tangentMode: 0

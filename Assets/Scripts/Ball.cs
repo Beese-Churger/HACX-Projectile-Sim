@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
         rbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
 
-        dragCoefficient = SettingsMenu.instance.GetDragCoefficientSlider(); 
+        dragCoefficient = SettingsMenu.instance.GetDragCoefficient(); 
             // get drag coefficient 
 
         r = distToGround;
@@ -41,11 +41,11 @@ public class Ball : MonoBehaviour
         // Calculate the angle between the forward vector and the upward direction.
         float angle = Mathf.Atan2(facingDirection.y, facingDirection.z) * Mathf.Rad2Deg;
 
-        float yComponent = Mathf.Cos(angle * Mathf.Deg2Rad) * force;
-        float zComponent = Mathf.Sin(angle * Mathf.Deg2Rad) * force;
-        Vector3 forceApplied = new Vector3(0, yComponent, zComponent);
+        //float yComponent = Mathf.Cos(angle * Mathf.Deg2Rad) * force;
+        //float zComponent = Mathf.Sin(angle * Mathf.Deg2Rad) * force;
+        //Vector3 forceApplied = new Vector3(0, yComponent, zComponent);
 
-        rbody.AddForce(forceApplied, ForceMode.Impulse);
+        rbody.AddForce(facingDirection * force, ForceMode.Impulse);
 
     }
 

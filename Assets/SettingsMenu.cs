@@ -9,13 +9,16 @@ public class SettingsMenu : MonoBehaviour
     public static SettingsMenu instance; 
     public Slider CalculationDensitySlider;
     public Slider DragCoefficientSlider; 
-    public Slider SimulationSpeedSlider; 
+    public Slider SimulationSpeedSlider;
+    public Slider AngleIncrementSlider;
 
     public List<AreaSplitManager> SplitManagers = new List<AreaSplitManager>();
     public MainGameManager MGM;
     public GameObject HelpHeaderDisplay;
     public TMP_Text HelpText;
 
+    private float drag = 0.47f;
+    private int AngleIncrement = 5;
     void Start() 
     {
         if (!instance) 
@@ -57,12 +60,26 @@ public class SettingsMenu : MonoBehaviour
             ASM.SpawnCulprits();
         }
     }
-    public float GetDragCoefficientSlider() 
+
+    public void OnDragChange()
     {
-        return DragCoefficientSlider.value;
+        drag = DragCoefficientSlider.value;
     }
-    public float GetSimulationSpeed()
+
+    public void OnSpeedChange()
     {
-        return SimulationSpeedSlider.value;
+        Time.timeScale = SimulationSpeedSlider.value;
+    }
+    public void OnAngleIncrementChange()
+    {
+        AngleIncrement = (int)AngleIncrementSlider.value;
+    }
+    public int GetAngleIncrement()
+    {
+        return AngleIncrement;
+    }
+    public float GetDragCoefficient() 
+    {
+        return  drag;
     }
 }

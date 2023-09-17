@@ -116,7 +116,11 @@ public class MainGameManager : MonoBehaviour
         }
       
     }
-
+    public void StartRealTime()
+    {
+        MainGameUI.SetActive(false);
+        gameObject.GetComponent<CalcTrajectory>().CalculatePath();
+    }
     void ResetWindowColor(GameObject window)
     {
         Renderer renderer = window.GetComponent<Renderer>();
@@ -126,5 +130,10 @@ public class MainGameManager : MonoBehaviour
     public List<Window> GetWindows()
     {
         return SelectedWindows;
+    }
+
+    public List<GameObject> GetCulprits()
+    {
+        return SpawnedCulprits;
     }
 }
