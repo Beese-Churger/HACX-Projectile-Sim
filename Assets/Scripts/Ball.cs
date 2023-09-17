@@ -18,10 +18,16 @@ public class Ball : MonoBehaviour
     float p = 1.225f; //density of air 1.225kg/m^3
     public float area;
     // Start is called before the first frame update
+
+
     void Awake()
     {
         rbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
+
+        dragCoefficient = SettingsMenu.instance.GetDragCoefficientSlider(); 
+            // get drag coefficient 
+
         r = distToGround;
         volume = (4 * Mathf.PI * r * r * r) / 3;
         rbody.mass = density * volume; // in grams
@@ -78,5 +84,10 @@ public class Ball : MonoBehaviour
     public void Simulate()
     {
 
+    }
+    
+    public void setDragCoefficient(float newValue) 
+    {
+        dragCoefficient = newValue; 
     }
 }

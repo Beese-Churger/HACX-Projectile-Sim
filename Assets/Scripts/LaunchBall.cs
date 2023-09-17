@@ -10,7 +10,7 @@ public class LaunchBall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = TimeScale;
+        Time.timeScale = SettingsMenu.instance.GetSimulationSpeed();
     }
 
     // Update is called once per frame
