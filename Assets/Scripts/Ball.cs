@@ -28,11 +28,17 @@ public class Ball : MonoBehaviour
 
         area = 4 * Mathf.PI * r * r;
         force = rbody.mass * 70;
-        float angle = 45f;
-        angle *= Mathf.Deg2Rad;
-        float yComponent = Mathf.Cos(angle) * force;
-        float zComponent = Mathf.Sin(angle) * force;
+
+        // Assuming that 'transform.forward' represents the direction the ball is facing.
+        Vector3 facingDirection = transform.forward;
+
+        // Calculate the angle between the forward vector and the upward direction.
+        float angle = Mathf.Atan2(facingDirection.y, facingDirection.z) * Mathf.Rad2Deg;
+
+        float yComponent = Mathf.Cos(angle * Mathf.Deg2Rad) * force;
+        float zComponent = Mathf.Sin(angle * Mathf.Deg2Rad) * force;
         Vector3 forceApplied = new Vector3(0, yComponent, zComponent);
+
         rbody.AddForce(forceApplied, ForceMode.Impulse);
 
     }
