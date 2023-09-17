@@ -22,11 +22,11 @@ public class Ball : MonoBehaviour
     {
         rbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
-        r = distToGround * 0.5f;
+        r = distToGround;
         volume = (4 * Mathf.PI * r * r * r) / 3;
         rbody.mass = density * volume; // in grams
 
-        area = 4 * Mathf.PI * r * r;
+        area = 2 * Mathf.PI * r * r;
         force = rbody.mass * 70;
 
         // Assuming that 'transform.forward' represents the direction the ball is facing.
@@ -56,14 +56,14 @@ public class Ball : MonoBehaviour
         else
         {
             Debug.Log(rbody.velocity.magnitude);
-            SimulateInRealTime(Time.fixedDeltaTime);
+            SimulateInRealTime(Time.deltaTime);
         }
 
     }
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.01f);
+        return (transform.position.y < 0);
     }
 
     void SimulateInRealTime(float dt)

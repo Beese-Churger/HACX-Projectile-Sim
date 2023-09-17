@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   islaunched: 0
-  density: 7750
-  dragCoefficient: 0.1
+  density: 7785
+  dragCoefficient: 0.47
   volume: 0
   initialVel: 70
   r: 0

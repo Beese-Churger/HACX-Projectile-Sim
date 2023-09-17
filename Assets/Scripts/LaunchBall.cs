@@ -6,10 +6,11 @@ public class LaunchBall : MonoBehaviour
 {
     public GameObject ball;
     public float angle;
+    public float TimeScale;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Time.timeScale = TimeScale;
     }
 
     // Update is called once per frame
@@ -17,8 +18,11 @@ public class LaunchBall : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Quaternion rot = Quaternion.Euler(angle, 0, 0);
-            Instantiate(ball, transform.position, rot);
+            for (int i = 0; i < 100; i++)
+            {
+                Quaternion rot = Quaternion.Euler(angle + i * 2, 0, 0);
+                Instantiate(ball, transform.position, rot);
+            }
         }
     }
 }

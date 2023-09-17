@@ -10,6 +10,7 @@ public class MainGameManager : MonoBehaviour
     [Header("Controllers")]
     public Animator CameraAnimator;
     public AnimationClip CameraToMainGameTransition;
+    public AnimationClip CameraToSettingsTransition;
     public float TransitionSpeed;
     [Header("MainMenuElements")]
     public GameObject MainMenuUI;
@@ -55,6 +56,12 @@ public class MainGameManager : MonoBehaviour
         MainMenuUI.SetActive(false);
         MainGameUI.SetActive(true);
     }
+
+    public void TransitionToSettings()
+    {
+        CameraAnimator.CrossFade(CameraToSettingsTransition.name, TransitionSpeed);
+    }
+
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
