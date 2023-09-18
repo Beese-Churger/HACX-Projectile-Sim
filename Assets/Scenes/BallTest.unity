@@ -721,8 +721,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
-  angle: 1
-  TimeScale: 0.5
+  angle: 0
+  TimeScale: 2
 --- !u!23 &1967101514
 MeshRenderer:
   m_ObjectHideFlags: 0

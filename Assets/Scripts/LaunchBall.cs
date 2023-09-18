@@ -18,9 +18,9 @@ public class LaunchBall : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
-                Quaternion rot = Quaternion.Euler(angle + i * 2, 0, 0);
+                Quaternion rot = Quaternion.Euler(angle - i * 15, 0, 0);
                 Instantiate(ball, transform.position, rot);
             }
         }
