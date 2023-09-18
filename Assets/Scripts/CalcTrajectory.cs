@@ -34,7 +34,7 @@ public class CalcTrajectory : MonoBehaviour
 
             if (Physics.Raycast(currCulprit.ShootPosition.position, rayDir, out hit))
             {
-                if (hit.collider.tag != "Window")
+                if (hit.collider.tag != "Window" && hit.collider.tag != "Hitzone")
                     continue;
                 ViableCulprits1.Add(Culprits[i]);
             }
@@ -49,7 +49,7 @@ public class CalcTrajectory : MonoBehaviour
 
             if (Physics.Raycast(currCulprit.ShootPosition.position, rayDir, out hit))
             {
-                if (hit.collider.tag != "Window")
+                if (hit.collider.tag != "Window" && hit.collider.tag != "Hitzone")
                     continue;
                 ViableCulprits2.Add(Culprits[i]);
             }

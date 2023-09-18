@@ -93,7 +93,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Window")
+        if (other.tag != "Hitzone")
         {
             Destroy(gameObject);
         }
