@@ -7792,7 +7792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de1b484eda0fa54d8c64f2a143e9a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HelpTitleText: Calculation Density
+  HelpTitleText: Drag Coefficient
   HelpDescriptionText: "The drag coefficient measures how smoothly the ball bearing
     moves through air. A low coefficient means it encounters less resistance, while
     a high coefficient means more resistance. It is recommended not to mess around

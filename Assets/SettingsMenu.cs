@@ -59,8 +59,8 @@ public class SettingsMenu : MonoBehaviour
     {
         CalculationDensValueText.text = ((int)CalculationDensitySlider.value).ToString();
         DragCoeffecientValueText.text = DragCoefficientSlider.value.ToString("F2");
-        SimSpeedValueText.text = SimulationSpeedSlider.value.ToString();
-        AngIncValueText.text = (AngleIncrementSlider.value).ToString();
+        SimSpeedValueText.text = SimulationSpeedSlider.value.ToString("F1");
+        AngIncValueText.text = (AngleIncrementSlider.value).ToString("F1");
     }
 
 
