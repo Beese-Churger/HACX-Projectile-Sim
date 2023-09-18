@@ -19,13 +19,14 @@ public class Ball : MonoBehaviour
     public float area;
     // Start is called before the first frame update
 
-
+    private List<Window> targets;
     void Awake()
     {
+        targets = MainGameManager.instance.GetWindows();
         rbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
 
-        dragCoefficient = SettingsMenu.instance.GetDragCoefficient(); 
+        dragCoefficient = 0.1f;
             // get drag coefficient 
 
         r = distToGround;
@@ -93,9 +94,42 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Hitzone")
+        Culprit shooter = transform.root.GetComponent<Culprit>();
+        if (other.tag != "Window")
         {
+            shooter.travelling = false;
+            shooter.hit = false;
+            switch(shooter.currtarget)
+            {
+                case 1:
+                    {
+                        if (transform.position.y < targets[0].transform.position.y)
+                            shooter.below = true;
+                        else
+                            shooter.below = false;
+                        break;
+                    }
+                case 2:
+                    {
+                        if (transform.position.y < targets[1].transform.position.y)
+                            shooter.below = true;
+                        else
+                            shooter.below = false;
+                        break;
+                    }
+                default:
+                    break;
+            }
             Destroy(gameObject);
+        }
+        else
+        {
+            shooter.hit = true;
+            shooter.travelling = false;
+            rbody.isKinematic = true;
+            rbody.velocity = Vector3.zero;
+            Debug.Log("hi");
+            //Destroy(gameObject);
         }
     }
 }
