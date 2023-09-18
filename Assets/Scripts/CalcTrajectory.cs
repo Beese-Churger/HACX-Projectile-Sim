@@ -58,12 +58,12 @@ public class CalcTrajectory : MonoBehaviour
 
     void LaunchBalls(List<GameObject> ViableCulprits, int window, int increase)
     {
-        for (int i = 0; i < ViableCulprits1.Count; ++i)
+        for (int i = 0; i < ViableCulprits.Count; ++i)
         {
             Culprit currCulprit = ViableCulprits[i].GetComponent<Culprit>();
             currCulprit.ShootPosition.LookAt(SelectedWindows[window].transform);
             Quaternion rot = Quaternion.Euler(currCulprit.ShootPosition.rotation.x + increase, currCulprit.ShootPosition.rotation.y, currCulprit.ShootPosition.rotation.z);
-            Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation);
+            Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
         }
     }
 }

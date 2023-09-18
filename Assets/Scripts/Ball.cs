@@ -61,7 +61,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            Debug.Log(rbody.velocity.magnitude);
+           // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime(Time.deltaTime);
         }
 
@@ -77,7 +77,7 @@ public class Ball : MonoBehaviour
         Vector3 direction = -rbody.velocity.normalized;
         float velocity = rbody.velocity.magnitude;
         var forceAmount = (p * velocity * velocity * dragCoefficient * area) * 0.5f;
-        Debug.Log("drag: " + forceAmount);
+       // Debug.Log("drag: " + forceAmount);
         rbody.AddForce(direction * forceAmount);
     }
 
@@ -89,5 +89,13 @@ public class Ball : MonoBehaviour
     public void setDragCoefficient(float newValue) 
     {
         dragCoefficient = newValue; 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Window")
+        {
+            Destroy(gameObject);
+        }
     }
 }

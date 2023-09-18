@@ -37,6 +37,7 @@ public class AreaSplitManager : MonoBehaviour
             {
                 GameObject GO =Instantiate(objectToSpawn, spawnPosition, Quaternion.identity);
                 mainGameManager.SpawnedCulprits.Add(GO);
+                GO.name = "Culprit" + mainGameManager.SpawnedCulprits.Count;
                 Culprit culprit = GO.GetComponent<Culprit>();
                 mainGameManager.CulpritPositions.Add(culprit.ShootPosition.position);
             }
