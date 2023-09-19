@@ -12,54 +12,104 @@ public class CalcTrajectory : MonoBehaviour
     public List<GameObject> Balls;
     public GameObject BallPrefab;
 
-    bool launched = false;
+    bool launch1 = false;
+    bool launch2 = false;
+
     public void CalculatePath()
     {
         FindViableCulprits();
-
-        LaunchBalls(ViableCulprits1, 0);
-        //LaunchBalls(ViableCulprits2, 1);
-        launched = true;
+        LaunchBalls(ViableCulprits1, 1);
+        launch1 = true;
+        launch2 = false;
     }
 
     private void Update()
     {
-        if (!launched)
-            return;
 
-        for(int i = 0; i < ViableCulprits1.Count; ++i)
+        if (launch1)
         {
-            Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
-            if (curr.hit || curr.travelling)
-                continue;
-
-            if (!curr.travelling && !curr.hit)
+            for (int i = 0; i < ViableCulprits1.Count; ++i)
             {
-                Vector3 dir = SelectedWindows[0].transform.position - curr.ShootPosition.position;
-                Quaternion targetRotation = Quaternion.LookRotation(dir);
+                Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+                if (curr.hit || curr.travelling)
+                    continue;
 
-            
-
-                if (!curr.below)
+                if (!curr.travelling && !curr.hit)
                 {
-                    curr.launchAngleMax = curr.angle;
-                }
-                else
-                {
-                    curr.launchAngleMin = curr.angle;
-                }
+                    Vector3 dir = SelectedWindows[0].transform.position - curr.ShootPosition.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(dir);
 
+                    if (!curr.below)
+                    {
+                        curr.launchAngleMax = curr.angle;
+                    }
+                    else
+                    {
+                        curr.launchAngleMin = curr.angle;
+                    }
 
-                curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
-                Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
-                Quaternion finalRotation = targetRotation * tiltRotation;
-                curr.ShootPosition.localRotation = finalRotation;
-                Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
-                curr.travelling = true;
-                curr.hit = false;
-                curr.currtarget = 1;
+                    curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
+                    Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
+                    Quaternion finalRotation = targetRotation * tiltRotation;
+                    curr.ShootPosition.localRotation = finalRotation;
+                    curr.Launch(1);
+                    curr.ResetMinMax();
+                    Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                }
             }
         }
+        //Debug.Log(CheckIsFirstWindowDone());
+        if (CheckIsFirstWindowDone() && !launch2)
+        {
+
+            LaunchBalls(ViableCulprits2, 2);
+            launch2 = true;
+            launch1 = false;
+        }     
+        if(launch2)
+        {
+           // Debug.Log(launch2);
+            for (int i = 0; i < ViableCulprits2.Count; ++i)
+            {
+                Culprit curr = ViableCulprits2[i].GetComponent<Culprit>();
+                if (curr.hit || curr.travelling)
+                    continue;
+
+                if (!curr.travelling && !curr.hit)
+                {
+                    Vector3 dir = SelectedWindows[1].transform.position - curr.ShootPosition.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(dir);
+
+
+                    if (!curr.below)
+                    {
+                        curr.launchAngleMax = curr.angle;
+                    }
+                    else
+                    {
+                        curr.launchAngleMin = curr.angle;
+                    }
+
+                    curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
+                    Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
+                    Quaternion finalRotation = targetRotation * tiltRotation;
+                    curr.ShootPosition.localRotation = finalRotation;
+                    curr.Launch(2);
+                    curr.ResetMinMax();
+                    Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                }
+            }
+        }
+    }
+    bool CheckIsFirstWindowDone()
+    {
+        for (int i = 0; i < ViableCulprits1.Count; ++i)
+        {
+            Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+            if (!curr.hit)
+                return false;
+        }
+        return true;
     }
     void FindViableCulprits()
     {
@@ -103,16 +153,14 @@ public class CalcTrajectory : MonoBehaviour
         for (int i = 0; i < ViableCulprits.Count; ++i)
         {
             Culprit currCulprit = ViableCulprits[i].GetComponent<Culprit>();
-
-            Vector3 dir = SelectedWindows[window].transform.position - currCulprit.ShootPosition.position;
+            //currCulprit.Reset(window);
+            Vector3 dir = SelectedWindows[window - 1].transform.position - currCulprit.ShootPosition.position;
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             currCulprit.angle = currCulprit.ShootPosition.eulerAngles.x;
             currCulprit.ShootPosition.rotation = targetRotation;
 
-            currCulprit.travelling = true;
-            currCulprit.hit = false;
-            currCulprit.currtarget = window;
-
+            currCulprit.Launch(window);
+            currCulprit.ResetMinMax();
             Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
         }
     }

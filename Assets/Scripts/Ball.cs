@@ -22,6 +22,7 @@ public class Ball : MonoBehaviour
     private List<Window> targets;
     void Awake()
     {
+        islaunched = true;
         targets = MainGameManager.instance.GetWindows();
         rbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
@@ -91,11 +92,12 @@ public class Ball : MonoBehaviour
     {
         dragCoefficient = newValue; 
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
+        if (!islaunched)
+            return;
         Culprit shooter = transform.root.GetComponent<Culprit>();
-        if (other.tag != "Window")
+        if (other.transform.tag != "Window")
         {
             shooter.travelling = false;
             shooter.hit = false;
@@ -124,12 +126,53 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            shooter.hit = true;
-            shooter.travelling = false;
-            rbody.isKinematic = true;
-            rbody.velocity = Vector3.zero;
-            Debug.Log("hi");
-            //Destroy(gameObject);
+            switch (shooter.currtarget)
+            {
+                case 1:
+                    {
+                        if (other.transform.gameObject != targets[0].gameObject)
+                        {
+                            if (transform.position.y < targets[0].transform.position.y)
+                                shooter.below = true;
+                            else
+                                shooter.below = false;
+                            
+                            Destroy(gameObject);
+                        }
+                        else
+                        {
+                            shooter.hit = true;
+                            shooter.travelling = false;
+                            rbody.isKinematic = true;
+                            rbody.velocity = Vector3.zero;
+                            //islaunched = false;
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        if (other.transform.gameObject != targets[1].gameObject)
+                        {
+                            if (transform.position.y < targets[1].transform.position.y)
+                                shooter.below = true;
+                            else
+                                shooter.below = false;
+                            Destroy(gameObject);
+                        }
+                        else
+                        {
+                            shooter.hit = true;
+                            shooter.travelling = false;
+                            rbody.isKinematic = true;
+                            rbody.velocity = Vector3.zero;
+                            //islaunched = false;
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+          
         }
     }
 }

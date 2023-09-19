@@ -10,8 +10,8 @@ public class Culprit : MonoBehaviour
     public bool below = true;
     public bool hit = false;
 
-    public float launchAngleMax = -90f;
-    public float launchAngleMin = 0;
+    public float launchAngleMax = 0f;
+    public float launchAngleMin = -90f;
     public float angle;
 
     private void Awake()
@@ -19,5 +19,18 @@ public class Culprit : MonoBehaviour
         //launchAngleMin = ShootPosition.eulerAngles.x;
         launchAngleMax = -90f;
         launchAngleMin = 0f;
-}
+    }
+    public void Launch(int target)
+    {
+        currtarget = target;
+        travelling = true;
+        below = true;
+        hit = false;
+    }
+
+    public void ResetMinMax()
+    {
+        launchAngleMax = -90f;
+        launchAngleMin = 0;
+    }
 }
