@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class MainGameManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class MainGameManager : MonoBehaviour
     public Animator CameraAnimator;
     public AnimationClip CameraToMainGameTransition;
     public AnimationClip CameraToSettingsTransition;
+    public AnimationClip CameraToOverviewTransition;
     public float TransitionSpeed;
     [Header("MainMenuElements")]
     public GameObject MainMenuUI;
@@ -33,6 +37,14 @@ public class MainGameManager : MonoBehaviour
 
     [Header("Hits")]
     public List<HitBall> RegisteredHits = new List<HitBall>();
+    public List<HitBall> RegisteredHitsOnBothWindows = new List<HitBall>();
+
+    [Header("UI Related")]
+    public Button ChangeWindowDisplay;
+    public int WindowDisplayOption = 2;
+    public TMP_Text DisplayingCulpritText;
+    public Toggle ToggleHeatMap, ToggleAccuracy;
+    public GameObject PostResultsUIGO;
     
     public void ResetCulprits()
     {
@@ -54,6 +66,13 @@ public class MainGameManager : MonoBehaviour
             Destroy(this);
 
     }
+
+    public void SwapToCamOverview()
+    {
+        CameraAnimator.CrossFade(CameraToOverviewTransition.name, TransitionSpeed);
+        PostResultsUIGO.SetActive(true);
+    }    
+
     public void StartGame()
     {
         CameraAnimator.CrossFade(CameraToMainGameTransition.name, TransitionSpeed);
@@ -144,7 +163,91 @@ public class MainGameManager : MonoBehaviour
     public void AddNewHitRegistryToList(HitBall HB)
     {
         RegisteredHits.Add(HB);
-        RemoveDuplicateHits();
+        
+    }
+
+    public void RemoveAllCulprits()
+    {
+        foreach(GameObject C in SpawnedCulprits)
+        {
+            C.SetActive(false);
+        }
+    }
+
+    public void ToggleCulpritDisplays()
+    {
+        WindowDisplayOption++;
+        if (WindowDisplayOption > 2) WindowDisplayOption = 0;
+        RemoveAllCulprits();
+        if (WindowDisplayOption == 0)
+        {
+            ToggleFirstWindowHavers();
+            DisplayingCulpritText.text = "Display: Window 1 Only";
+        }
+        else if(WindowDisplayOption == 1)
+        {
+            ToggleSecondWindowHavers();
+            DisplayingCulpritText.text = "Display: Window 2 Only";
+        }
+        else if(WindowDisplayOption == 2)
+        {
+            ToggleBothWindowHavers();
+            DisplayingCulpritText.text = "Display: Both Windows";
+        }
+    }
+    
+    public void ToggleFirstWindowHavers()
+    {
+        foreach (HitBall B in RegisteredHits)
+        {
+            if (B.WindowHit == 0)
+            {
+                bool k = false;
+                foreach(HitBall b in RegisteredHitsOnBothWindows)
+                {
+                    if (b.RelatedHumanGameObject == B.RelatedHumanGameObject)
+                    {
+                        k = true;
+                        break;
+                    }
+                }
+                if(!k)
+                    B.RelatedHumanGameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void ToggleBothWindowHavers()
+    {
+        foreach (HitBall B in RegisteredHitsOnBothWindows)
+        {
+            if (B.canHitBoth)
+            {
+                B.RelatedHumanGameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void ToggleSecondWindowHavers()
+    {
+
+        foreach (HitBall B in RegisteredHits)
+        {
+            if (B.WindowHit == 1)
+            {
+                bool k = false;
+                foreach (HitBall b in RegisteredHitsOnBothWindows)
+                {
+                    if (b.RelatedHumanGameObject == B.RelatedHumanGameObject)
+                    {
+                        k = true;
+                        break;
+                    }
+                }
+                if (!k)
+                    B.RelatedHumanGameObject.SetActive(true);
+            }
+        }
     }
 
     public void RemoveAllCulpritsThatMissed()
@@ -162,21 +265,24 @@ public class MainGameManager : MonoBehaviour
         }
     }
 
-    public void RemoveDuplicateHits()
+    public void SortDuplicateHits()
     {
         for (int i = 0; i < RegisteredHits.Count; i++)
         {
             for (int j = i + 1; j < RegisteredHits.Count; j++)
             {
-                if (RegisteredHits[i].RelatedHumanGameObject == RegisteredHits[j].RelatedHumanGameObject)
+                if (RegisteredHits[i].RelatedHumanGameObject.name == RegisteredHits[j].RelatedHumanGameObject.name)
                 {
-                    if (RegisteredHits[i].WindowHit == 1 && RegisteredHits[j].WindowHit == 2)
+                    if (RegisteredHits[i].WindowHit == 0 && RegisteredHits[j].WindowHit == 1 || RegisteredHits[i].WindowHit == 1 && RegisteredHits[j].WindowHit == 0)
                     {
-                        RegisteredHits[i].canHitBoth = true;
+                        HitBall HB = new HitBall();
+                        HB.RelatedHumanGameObject = RegisteredHits[i].RelatedHumanGameObject;
+                        HB.WindowHit = 2;
+                        HB.canHitBoth = true;
+                        HB.DistanceFromCenter = 0;
+                        HB.CalculateAccuracy();
+                        RegisteredHitsOnBothWindows.Add(HB);
                     }
-
-                    RegisteredHits.RemoveAt(j);
-                    j--; // Adjust the index after removal
                 }
             }
         }
@@ -190,4 +296,10 @@ public class HitBall
     public bool canHitBoth = false;
     public int WindowHit;
     public float DistanceFromCenter;
+    public float Accuracy;
+    public Vector3 Hitposition;
+    public void CalculateAccuracy()
+    {
+        Accuracy = DistanceFromCenter / 0.5f;
+    }
 }

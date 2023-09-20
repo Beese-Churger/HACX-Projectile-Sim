@@ -116,12 +116,20 @@ public class Ball : MonoBehaviour
             Destroy(gameObject);
         }
         else
-        {     
+        {
+            Debug.Log("HIT TARGET: " + target);
             shooter.hit = true;
             shooter.travelling = false;
             rbody.isKinematic = true;
             rbody.velocity = Vector3.zero;
 
+            HitBall HB = new HitBall();
+            HB.RelatedHumanGameObject = transform.parent.gameObject;
+            HB.WindowHit = target;
+            HB.DistanceFromCenter = Vector3.Distance(transform.position, targets[target].transform.position);
+            HB.CalculateAccuracy();
+            HB.Hitposition = transform.position;
+            MainGameManager.instance.AddNewHitRegistryToList(HB);
         }
     }
 }

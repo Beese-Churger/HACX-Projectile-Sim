@@ -21,6 +21,16 @@ public class CalcTrajectory : MonoBehaviour
         LaunchBalls(ViableCulprits1, 1);
         launch1 = true;
         launch2 = false;
+        StartCoroutine(DelayedSortingOfCulprits());
+    }
+
+    public IEnumerator DelayedSortingOfCulprits()
+    {
+        yield return new WaitForSeconds(20);
+        MainGameManager.instance.SwapToCamOverview();
+        Debug.Log("SortedList!");
+        MainGameManager.instance.SortDuplicateHits();
+        MainGameManager.instance.ToggleBothWindowHavers();
     }
     private void Update()
     {
