@@ -116,15 +116,12 @@ public class Ball : MonoBehaviour
             Destroy(gameObject);
         }
         else
-        {
-            
-                       
+        {     
             shooter.hit = true;
             shooter.travelling = false;
             rbody.isKinematic = true;
             rbody.velocity = Vector3.zero;
-            //islaunched = false;
-                    
+
         }
     }
 }
