@@ -27,7 +27,7 @@ public class CalcTrajectory : MonoBehaviour
 
         if (launch1)
         {
-            if (!CheckIsTravelling())
+            if (!CheckIsTravelling(ViableCulprits1))
             {
                 for (int i = 0; i < ViableCulprits1.Count; ++i)
                 {
@@ -61,47 +61,47 @@ public class CalcTrajectory : MonoBehaviour
                 }
             }
         }
-        //Debug.Log(CheckIsFirstWindowDone());
         if (CheckIsWindowDone(ViableCulprits1) && !launch2 && launch1)
         {
 
             LaunchBalls(ViableCulprits2, 2);
             launch2 = true;
             launch1 = false;
-            //Debug.Log("insnae");
         }
         if (launch2)
         {
-            // Debug.Log(launch2);
-            for (int i = 0; i < ViableCulprits2.Count; ++i)
+            if (!CheckIsTravelling(ViableCulprits1))
             {
-                Culprit curr = ViableCulprits2[i].GetComponent<Culprit>();
-                if (curr.hit || curr.travelling)
-                    continue;
-
-                if (!curr.travelling && !curr.hit)
+                for (int i = 0; i < ViableCulprits2.Count; ++i)
                 {
-                    Vector3 dir = SelectedWindows[1].transform.position - curr.ShootPosition.position;
-                    Quaternion targetRotation = Quaternion.LookRotation(dir);
+                    Culprit curr = ViableCulprits2[i].GetComponent<Culprit>();
+                    if (curr.hit || curr.travelling)
+                        continue;
 
-
-                    if (!curr.below)
+                    if (!curr.travelling && !curr.hit)
                     {
-                        curr.launchAngleMax = curr.angle;
-                    }
-                    else
-                    {
-                        curr.launchAngleMin = curr.angle;
-                    }
+                        Vector3 dir = SelectedWindows[1].transform.position - curr.ShootPosition.position;
+                        Quaternion targetRotation = Quaternion.LookRotation(dir);
 
-                    curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
-                    Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
-                    Quaternion finalRotation = targetRotation * tiltRotation;
-                    curr.ShootPosition.localRotation = finalRotation;
-                    curr.Launch(2);
-                    curr.ResetMinMax();
-                    GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
-                    go.GetComponent<Ball>().SetTarget(1);
+
+                        if (!curr.below)
+                        {
+                            curr.launchAngleMax = curr.angle;
+                        }
+                        else
+                        {
+                            curr.launchAngleMin = curr.angle;
+                        }
+
+                        curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
+                        Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
+                        Quaternion finalRotation = targetRotation * tiltRotation;
+                        curr.ShootPosition.localRotation = finalRotation;
+                        curr.Launch(2);
+                        curr.ResetMinMax();
+                        GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                        go.GetComponent<Ball>().SetTarget(1);
+                    }
                 }
             }
         }
@@ -123,11 +123,11 @@ public class CalcTrajectory : MonoBehaviour
         return true;
     }
 
-    bool CheckIsTravelling()
+    bool CheckIsTravelling(List<GameObject> culprits)
     {
-        for (int i = 0; i < ViableCulprits1.Count; ++i)
+        for (int i = 0; i < culprits.Count; ++i)
         {
-            Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+            Culprit curr = culprits[i].GetComponent<Culprit>();
             if (curr.travelling)
                 return true;
         }
