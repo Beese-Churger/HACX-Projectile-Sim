@@ -27,7 +27,7 @@ public class CalcTrajectory : MonoBehaviour
 
         if (launch1)
         {
-            if(!CheckIsTravelling())
+            if (!CheckIsTravelling())
             {
                 for (int i = 0; i < ViableCulprits1.Count; ++i)
                 {
@@ -62,17 +62,17 @@ public class CalcTrajectory : MonoBehaviour
             }
         }
         //Debug.Log(CheckIsFirstWindowDone());
-        if (CheckIsFirstWindowDone() && !launch2 && launch1)
+        if (CheckIsWindowDone(ViableCulprits1) && !launch2 && launch1)
         {
 
             LaunchBalls(ViableCulprits2, 2);
             launch2 = true;
             launch1 = false;
             //Debug.Log("insnae");
-        }     
-        if(launch2)
+        }
+        if (launch2)
         {
-           // Debug.Log(launch2);
+            // Debug.Log(launch2);
             for (int i = 0; i < ViableCulprits2.Count; ++i)
             {
                 Culprit curr = ViableCulprits2[i].GetComponent<Culprit>();
@@ -105,17 +105,24 @@ public class CalcTrajectory : MonoBehaviour
                 }
             }
         }
-    }
-    bool CheckIsFirstWindowDone()
-    {
-        for (int i = 0; i < ViableCulprits1.Count; ++i)
+
+        if (CheckIsWindowDone(ViableCulprits2) && launch2 && !launch1)
         {
-            Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+            launch2 = false;
+            Debug.Log("end");
+        }
+    }
+    bool CheckIsWindowDone(List<GameObject> culprits)
+    {
+        for (int i = 0; i < culprits.Count; ++i)
+        {
+            Culprit curr = culprits[i].GetComponent<Culprit>();
             if (!curr.hit)
                 return false;
         }
         return true;
     }
+
     bool CheckIsTravelling()
     {
         for (int i = 0; i < ViableCulprits1.Count; ++i)
@@ -179,5 +186,10 @@ public class CalcTrajectory : MonoBehaviour
             GameObject go = Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
             go.GetComponent<Ball>().SetTarget(window - 1);
         }
+    }
+
+    void CalcCompleted()
+    {
+
     }
 }
