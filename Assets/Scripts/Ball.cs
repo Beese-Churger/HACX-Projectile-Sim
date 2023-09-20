@@ -18,6 +18,7 @@ public class Ball : MonoBehaviour
     float p = 1.225f; //density of air 1.225kg/m^3
     public float area;
     // Start is called before the first frame update
+    private int target;
 
     private List<Window> targets;
     void Awake()
@@ -92,87 +93,38 @@ public class Ball : MonoBehaviour
     {
         dragCoefficient = newValue; 
     }
+
+    public void SetTarget(int tar)
+    {
+        target = tar;
+    }
     private void OnCollisionEnter(Collision other)
     {
         if (!islaunched)
             return;
         Culprit shooter = transform.root.GetComponent<Culprit>();
-        if (other.transform.tag != "Window")
+        if (other.transform.gameObject != targets[target].gameObject)
         {
             shooter.travelling = false;
             shooter.hit = false;
-            switch(shooter.currtarget)
-            {
-                case 1:
-                    {
-                        if (transform.position.y < targets[0].transform.position.y)
-                            shooter.below = true;
-                        else
-                            shooter.below = false;
-                        break;
-                    }
-                case 2:
-                    {
-                        if (transform.position.y < targets[1].transform.position.y)
-                            shooter.below = true;
-                        else
-                            shooter.below = false;
-                        break;
-                    }
-                default:
-                    break;
-            }
+
+            if (transform.position.y < targets[target].transform.position.y)
+                shooter.below = true;
+            else
+                shooter.below = false;
+
             Destroy(gameObject);
         }
         else
         {
-            switch (shooter.currtarget)
-            {
-                case 1:
-                    {
-                        if (other.transform.gameObject != targets[0].gameObject)
-                        {
-                            if (transform.position.y < targets[0].transform.position.y)
-                                shooter.below = true;
-                            else
-                                shooter.below = false;
-                            
-                            Destroy(gameObject);
-                        }
-                        else
-                        {
-                            shooter.hit = true;
-                            shooter.travelling = false;
-                            rbody.isKinematic = true;
-                            rbody.velocity = Vector3.zero;
-                            //islaunched = false;
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        if (other.transform.gameObject != targets[1].gameObject)
-                        {
-                            if (transform.position.y < targets[1].transform.position.y)
-                                shooter.below = true;
-                            else
-                                shooter.below = false;
-                            Destroy(gameObject);
-                        }
-                        else
-                        {
-                            shooter.hit = true;
-                            shooter.travelling = false;
-                            rbody.isKinematic = true;
-                            rbody.velocity = Vector3.zero;
-                            //islaunched = false;
-                        }
-                        break;
-                    }
-                default:
-                    break;
-            }
-          
+            
+                       
+            shooter.hit = true;
+            shooter.travelling = false;
+            rbody.isKinematic = true;
+            rbody.velocity = Vector3.zero;
+            //islaunched = false;
+                    
         }
     }
 }

@@ -28,43 +28,48 @@ public class CalcTrajectory : MonoBehaviour
 
         if (launch1)
         {
-            for (int i = 0; i < ViableCulprits1.Count; ++i)
+            if(!CheckIsTravelling())
             {
-                Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
-                if (curr.hit || curr.travelling)
-                    continue;
-
-                if (!curr.travelling && !curr.hit)
+                for (int i = 0; i < ViableCulprits1.Count; ++i)
                 {
-                    Vector3 dir = SelectedWindows[0].transform.position - curr.ShootPosition.position;
-                    Quaternion targetRotation = Quaternion.LookRotation(dir);
+                    Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+                    if (curr.hit || curr.travelling)
+                        continue;
 
-                    if (!curr.below)
+                    if (!curr.travelling && !curr.hit)
                     {
-                        curr.launchAngleMax = curr.angle;
-                    }
-                    else
-                    {
-                        curr.launchAngleMin = curr.angle;
-                    }
+                        Vector3 dir = SelectedWindows[0].transform.position - curr.ShootPosition.position;
+                        Quaternion targetRotation = Quaternion.LookRotation(dir);
 
-                    curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
-                    Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
-                    Quaternion finalRotation = targetRotation * tiltRotation;
-                    curr.ShootPosition.localRotation = finalRotation;
-                    curr.Launch(1);
-                    curr.ResetMinMax();
-                    Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                        if (!curr.below)
+                        {
+                            curr.launchAngleMax = curr.angle;
+                        }
+                        else
+                        {
+                            curr.launchAngleMin = curr.angle;
+                        }
+
+                        curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
+                        Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
+                        Quaternion finalRotation = targetRotation * tiltRotation;
+                        curr.ShootPosition.localRotation = finalRotation;
+                        curr.Launch(1);
+                        curr.ResetMinMax();
+                        GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                        go.GetComponent<Ball>().SetTarget(0);
+                    }
                 }
             }
         }
         //Debug.Log(CheckIsFirstWindowDone());
-        if (CheckIsFirstWindowDone() && !launch2)
+        if (CheckIsFirstWindowDone() && !launch2 && launch1)
         {
 
             LaunchBalls(ViableCulprits2, 2);
             launch2 = true;
             launch1 = false;
+            //Debug.Log("insnae");
         }     
         if(launch2)
         {
@@ -96,7 +101,8 @@ public class CalcTrajectory : MonoBehaviour
                     curr.ShootPosition.localRotation = finalRotation;
                     curr.Launch(2);
                     curr.ResetMinMax();
-                    Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                    GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
+                    go.GetComponent<Ball>().SetTarget(1);
                 }
             }
         }
@@ -110,6 +116,16 @@ public class CalcTrajectory : MonoBehaviour
                 return false;
         }
         return true;
+    }
+    bool CheckIsTravelling()
+    {
+        for (int i = 0; i < ViableCulprits1.Count; ++i)
+        {
+            Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
+            if (curr.travelling)
+                return true;
+        }
+        return false;
     }
     void FindViableCulprits()
     {
@@ -161,7 +177,8 @@ public class CalcTrajectory : MonoBehaviour
 
             currCulprit.Launch(window);
             currCulprit.ResetMinMax();
-            Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
+            GameObject go = Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
+            go.GetComponent<Ball>().SetTarget(window - 1);
         }
     }
 }
