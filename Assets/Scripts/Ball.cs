@@ -146,6 +146,13 @@ public class Ball : MonoBehaviour
                             rbody.isKinematic = true;
                             rbody.velocity = Vector3.zero;
                             //islaunched = false;
+
+                            HitBall HB = new HitBall();
+                            HB.RelatedHumanGameObject = transform.parent.gameObject;
+                            HB.WindowHit = 1;
+                            MainGameManager.instance.AddNewHitRegistryToList(HB);
+                            
+                            //Will add distance calc later
                         }
                         break;
                     }
@@ -166,6 +173,11 @@ public class Ball : MonoBehaviour
                             rbody.isKinematic = true;
                             rbody.velocity = Vector3.zero;
                             //islaunched = false;
+                            HitBall HB = new HitBall();
+                            HB.RelatedHumanGameObject = transform.parent.gameObject;
+                            HB.WindowHit = 2;
+                            MainGameManager.instance.AddNewHitRegistryToList(HB);
+                            //Will add distance calc later
                         }
                         break;
                     }

@@ -22,7 +22,6 @@ public class CalcTrajectory : MonoBehaviour
         launch1 = true;
         launch2 = false;
     }
-
     private void Update()
     {
 

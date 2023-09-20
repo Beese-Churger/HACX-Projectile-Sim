@@ -30,6 +30,10 @@ public class MainGameManager : MonoBehaviour
     [Header("Positions")]
     public List<Vector3> CulpritPositions = new List<Vector3>();
     public List<GameObject> SpawnedCulprits = new List<GameObject>();
+
+    [Header("Hits")]
+    public List<HitBall> RegisteredHits = new List<HitBall>();
+    
     public void ResetCulprits()
     {
         foreach(GameObject GO in SpawnedCulprits)
@@ -136,4 +140,54 @@ public class MainGameManager : MonoBehaviour
     {
         return SpawnedCulprits;
     }
+
+    public void AddNewHitRegistryToList(HitBall HB)
+    {
+        RegisteredHits.Add(HB);
+        RemoveDuplicateHits();
+    }
+
+    public void RemoveAllCulpritsThatMissed()
+    {
+        foreach(GameObject C in SpawnedCulprits)
+        {
+            foreach(HitBall HB in RegisteredHits)
+            {
+                if (HB.RelatedHumanGameObject == C)
+                {
+                    continue;
+                }
+                else C.SetActive(false);
+            }
+        }
+    }
+
+    public void RemoveDuplicateHits()
+    {
+        for (int i = 0; i < RegisteredHits.Count; i++)
+        {
+            for (int j = i + 1; j < RegisteredHits.Count; j++)
+            {
+                if (RegisteredHits[i].RelatedHumanGameObject == RegisteredHits[j].RelatedHumanGameObject)
+                {
+                    if (RegisteredHits[i].WindowHit == 1 && RegisteredHits[j].WindowHit == 2)
+                    {
+                        RegisteredHits[i].canHitBoth = true;
+                    }
+
+                    RegisteredHits.RemoveAt(j);
+                    j--; // Adjust the index after removal
+                }
+            }
+        }
+    }
+}
+
+[System.Serializable]
+public class HitBall
+{
+    public GameObject RelatedHumanGameObject;
+    public bool canHitBoth = false;
+    public int WindowHit;
+    public float DistanceFromCenter;
 }
