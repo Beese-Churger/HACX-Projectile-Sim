@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Culprit : MonoBehaviour
@@ -13,6 +14,8 @@ public class Culprit : MonoBehaviour
     public float launchAngleMax = 0f;
     public float launchAngleMin = -90f;
     public float angle;
+
+    public TMP_Text AccuracyText;
 
     private void Awake()
     {

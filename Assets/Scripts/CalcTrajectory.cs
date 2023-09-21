@@ -9,11 +9,12 @@ public class CalcTrajectory : MonoBehaviour
 
     public List<GameObject> ViableCulprits1;
     public List<GameObject> ViableCulprits2;
-    public List<GameObject> Balls;
     public GameObject BallPrefab;
 
     bool launch1 = false;
     bool launch2 = false;
+
+    public SettingsMenu SM;
 
     public void CalculatePath()
     {
@@ -21,16 +22,21 @@ public class CalcTrajectory : MonoBehaviour
         LaunchBalls(ViableCulprits1, 1);
         launch1 = true;
         launch2 = false;
-        StartCoroutine(DelayedSortingOfCulprits());
+      
     }
 
     public IEnumerator DelayedSortingOfCulprits()
     {
-        yield return new WaitForSeconds(20);
+        yield return new WaitForSeconds(1);
         MainGameManager.instance.SwapToCamOverview();
         Debug.Log("SortedList!");
         MainGameManager.instance.SortDuplicateHits();
         MainGameManager.instance.ToggleBothWindowHavers();
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach(GameObject ball in balls)
+        {
+            SM.Balls.Add(ball);
+        }
     }
     private void Update()
     {
@@ -119,7 +125,7 @@ public class CalcTrajectory : MonoBehaviour
         if (CheckIsWindowDone(ViableCulprits2) && launch2 && !launch1)
         {
             launch2 = false;
-            Debug.Log("end");
+            StartCoroutine(DelayedSortingOfCulprits());
         }
     }
     bool CheckIsWindowDone(List<GameObject> culprits)

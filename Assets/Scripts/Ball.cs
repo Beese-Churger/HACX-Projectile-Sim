@@ -126,7 +126,10 @@ public class Ball : MonoBehaviour
             HitBall HB = new HitBall();
             HB.RelatedHumanGameObject = transform.parent.gameObject;
             HB.WindowHit = target;
-            HB.DistanceFromCenter = Vector3.Distance(transform.position, targets[target].transform.position);
+            if(target == 0)
+                HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
+            else
+                HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
             HB.CalculateAccuracy();
             HB.Hitposition = transform.position;
             MainGameManager.instance.AddNewHitRegistryToList(HB);

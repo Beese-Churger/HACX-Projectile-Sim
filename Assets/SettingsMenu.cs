@@ -16,10 +16,14 @@ public class SettingsMenu : MonoBehaviour
     public List<AreaSplitManager> SplitManagers = new List<AreaSplitManager>();
     public MainGameManager MGM;
 
+    public List<GameObject> Balls = new List<GameObject>();
+
     [Header("HelpMenu")]
     public Image HelpImage;
     public GameObject HelpHeaderDisplay;
     public TMP_Text HelpDescText, HelpTitleText;
+    public bool HMIsOn = false;
+    public bool AccIsOn = false;
 
     [Header("Windows")]
     public List<GameObject> SettingsWindows = new List<GameObject>();
@@ -30,6 +34,14 @@ public class SettingsMenu : MonoBehaviour
 
     private float drag = 0.47f;
     private int AngleIncrement = 5;
+
+    public void ToggleBallTracers()
+    {
+        foreach(GameObject ball in Balls)
+        {
+            ball.SetActive(!ball.activeSelf);
+        }
+    }
 
     public void ToggleOffAllSettingsWindows()
     {
@@ -98,6 +110,52 @@ public class SettingsMenu : MonoBehaviour
         }
 
         ChangeAllSliderValueTexts();
+    }
+
+    public void ToggleAccuracy()
+    {
+        if(AccIsOn)
+        {
+            foreach(HitBall B in MainGameManager.instance.RegisteredHits)
+            {
+                B.RelatedHumanGameObject.GetComponent<Culprit>().AccuracyText.gameObject.SetActive(false);
+            }
+            AccIsOn = false;
+        }
+        else if (!AccIsOn)
+        {
+            foreach (HitBall B in MainGameManager.instance.RegisteredHits)
+            {
+                B.RelatedHumanGameObject.GetComponent<Culprit>().AccuracyText.gameObject.SetActive(true);
+            }
+            AccIsOn = true;
+        }
+    }
+
+    public void ToggleHM()
+    {
+        if (HMIsOn)
+        {
+            foreach (HitBall B in MainGameManager.instance.RegisteredHits)
+            {
+                B.RelatedHumanGameObject.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
+            }
+            HMIsOn = false;
+        }
+        else
+        {
+            foreach (HitBall B in MainGameManager.instance.RegisteredHits)
+            {
+                float accuracy = B.Accuracy;
+                // Make sure accuracy is clamped between 0 and 1
+                accuracy = Mathf.Clamp01(accuracy);
+                // Lerp between green and red based on accuracy
+                Color targetColor = Color.Lerp(Color.green, Color.red, accuracy * 2);
+                // Assign the target color to the material
+                B.RelatedHumanGameObject.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = targetColor;
+            }
+            HMIsOn = true;
+        }
     }
 
     public void OnDragChange()

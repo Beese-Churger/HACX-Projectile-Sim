@@ -8,6 +8,7 @@ TagManager:
   - Culprit
   - CulpritSpawnArea
   - Hitzone
+  - Ball
   layers:
   - Default
   - TransparentFX

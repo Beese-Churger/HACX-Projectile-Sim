@@ -279,7 +279,8 @@ public class MainGameManager : MonoBehaviour
                         HB.RelatedHumanGameObject = RegisteredHits[i].RelatedHumanGameObject;
                         HB.WindowHit = 2;
                         HB.canHitBoth = true;
-                        HB.DistanceFromCenter = 0;
+                        HB.DistanceFromCenterW1 = RegisteredHits[i].DistanceFromCenterW1;
+                        HB.DistanceFromCenterW2 = RegisteredHits[j].DistanceFromCenterW2;
                         HB.CalculateAccuracy();
                         RegisteredHitsOnBothWindows.Add(HB);
                     }
@@ -295,11 +296,21 @@ public class HitBall
     public GameObject RelatedHumanGameObject;
     public bool canHitBoth = false;
     public int WindowHit;
-    public float DistanceFromCenter;
+    public float DistanceFromCenterW1, DistanceFromCenterW2;
     public float Accuracy;
     public Vector3 Hitposition;
     public void CalculateAccuracy()
     {
-        Accuracy = DistanceFromCenter / 0.5f;
+        if(WindowHit == 0)
+        {
+            Accuracy = DistanceFromCenterW1;
+        }
+        else if(WindowHit == 1)
+        {
+            Accuracy = DistanceFromCenterW2;
+        }
+        else if(WindowHit == 2)            
+            Accuracy = (DistanceFromCenterW1 + DistanceFromCenterW2) / 2;
+        RelatedHumanGameObject.GetComponent<Culprit>().AccuracyText.text = Accuracy.ToString("F2");
     }
 }
