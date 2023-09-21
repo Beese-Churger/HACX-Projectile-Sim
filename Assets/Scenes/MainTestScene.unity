@@ -720,7 +720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &83273793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13794,6 +13794,8 @@ MonoBehaviour:
   HelpHeaderDisplay: {fileID: 530142022}
   HelpDescText: {fileID: 724398006}
   HelpTitleText: {fileID: 1480232660}
+  HMIsOn: 0
+  AccIsOn: 0
   SettingsWindows:
   - {fileID: 1949918707}
   - {fileID: 1690595177}
