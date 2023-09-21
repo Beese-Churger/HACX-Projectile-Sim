@@ -14,15 +14,16 @@ public class CalcTrajectory : MonoBehaviour
     bool launch1 = false;
     bool launch2 = false;
 
+    int maxIteration = 10;
+
     public SettingsMenu SM;
 
     public void CalculatePath()
     {
         FindViableCulprits();
-        LaunchBalls(ViableCulprits1, 1);
+        LaunchBalls(ViableCulprits1, 0);
         launch1 = true;
         launch2 = false;
-      
     }
 
     public IEnumerator DelayedSortingOfCulprits()
@@ -33,7 +34,7 @@ public class CalcTrajectory : MonoBehaviour
         MainGameManager.instance.SortDuplicateHits();
         MainGameManager.instance.ToggleBothWindowHavers();
         GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
-        foreach(GameObject ball in balls)
+        foreach (GameObject ball in balls)
         {
             SM.Balls.Add(ball);
         }
@@ -44,96 +45,35 @@ public class CalcTrajectory : MonoBehaviour
         if (launch1)
         {
             if (!CheckIsTravelling(ViableCulprits1))
-            {
-                for (int i = 0; i < ViableCulprits1.Count; ++i)
-                {
-                    Culprit curr = ViableCulprits1[i].GetComponent<Culprit>();
-                    if (curr.hit || curr.travelling)
-                        continue;
-
-                    if (!curr.travelling && !curr.hit)
-                    {
-                        Vector3 dir = SelectedWindows[0].transform.position - curr.ShootPosition.position;
-                        Quaternion targetRotation = Quaternion.LookRotation(dir);
-
-                        if (!curr.below)
-                        {
-                            curr.launchAngleMax = curr.angle;
-                        }
-                        else
-                        {
-                            curr.launchAngleMin = curr.angle;
-                        }
-
-                        curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
-                        Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
-                        Quaternion finalRotation = targetRotation * tiltRotation;
-                        curr.ShootPosition.localRotation = finalRotation;
-                        curr.Launch(1);
-                        curr.ResetMinMax();
-                        GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
-                        go.GetComponent<Ball>().SetTarget(0);
-                    }
-                }
-            }
+                SetCanShoot(ViableCulprits1);
         }
-        if (CheckIsWindowDone(ViableCulprits1) && !launch2 && launch1)
-        {
 
-            LaunchBalls(ViableCulprits2, 2);
+        if (CheckIsWindowDone(ViableCulprits1, 0) && !launch2 && launch1)
+        {
+            LaunchBalls(ViableCulprits2, 1);
             launch2 = true;
             launch1 = false;
         }
+
         if (launch2)
         {
-            if (!CheckIsTravelling(ViableCulprits1))
-            {
-                for (int i = 0; i < ViableCulprits2.Count; ++i)
-                {
-                    Culprit curr = ViableCulprits2[i].GetComponent<Culprit>();
-                    if (curr.hit || curr.travelling)
-                        continue;
-
-                    if (!curr.travelling && !curr.hit)
-                    {
-                        Vector3 dir = SelectedWindows[1].transform.position - curr.ShootPosition.position;
-                        Quaternion targetRotation = Quaternion.LookRotation(dir);
-
-
-                        if (!curr.below)
-                        {
-                            curr.launchAngleMax = curr.angle;
-                        }
-                        else
-                        {
-                            curr.launchAngleMin = curr.angle;
-                        }
-
-                        curr.angle = curr.launchAngleMin + curr.launchAngleMax * 0.5f;
-                        Quaternion tiltRotation = Quaternion.Euler(curr.angle, 0, 0);
-                        Quaternion finalRotation = targetRotation * tiltRotation;
-                        curr.ShootPosition.localRotation = finalRotation;
-                        curr.Launch(2);
-                        curr.ResetMinMax();
-                        GameObject go = Instantiate(BallPrefab, curr.ShootPosition.position, curr.ShootPosition.rotation, curr.ShootPosition.root);
-                        go.GetComponent<Ball>().SetTarget(1);
-                    }
-                }
-            }
+            if (!CheckIsTravelling(ViableCulprits2))
+                SetCanShoot(ViableCulprits2);
         }
 
-        if (CheckIsWindowDone(ViableCulprits2) && launch2 && !launch1)
+        if (CheckIsWindowDone(ViableCulprits2, 1) && launch2 && !launch1)
         {
             launch2 = false;
             StartCoroutine(DelayedSortingOfCulprits());
         }
     }
-    bool CheckIsWindowDone(List<GameObject> culprits)
+    bool CheckIsWindowDone(List<GameObject> culprits, int window)
     {
         for (int i = 0; i < culprits.Count; ++i)
         {
             Culprit curr = culprits[i].GetComponent<Culprit>();
-            if (!curr.hit)
+
+            if ((!curr.hitWindow1 && window == 0) || (!curr.hitWindow2 && window == 1))
                 return false;
         }
         return true;
@@ -148,6 +88,15 @@ public class CalcTrajectory : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    void SetCanShoot(List<GameObject> culprits)
+    {
+        for (int i = 0; i < culprits.Count; ++i)
+        {
+            Culprit curr = culprits[i].GetComponent<Culprit>();
+            curr.canShoot = true;
+        }
     }
     void FindViableCulprits()
     {
@@ -191,21 +140,7 @@ public class CalcTrajectory : MonoBehaviour
         for (int i = 0; i < ViableCulprits.Count; ++i)
         {
             Culprit currCulprit = ViableCulprits[i].GetComponent<Culprit>();
-            //currCulprit.Reset(window);
-            Vector3 dir = SelectedWindows[window - 1].transform.position - currCulprit.ShootPosition.position;
-            Quaternion targetRotation = Quaternion.LookRotation(dir);
-            currCulprit.angle = currCulprit.ShootPosition.eulerAngles.x;
-            currCulprit.ShootPosition.rotation = targetRotation;
-
-            currCulprit.Launch(window);
-            currCulprit.ResetMinMax();
-            GameObject go = Instantiate(BallPrefab, currCulprit.ShootPosition.position, currCulprit.ShootPosition.rotation, currCulprit.ShootPosition.root);
-            go.GetComponent<Ball>().SetTarget(window - 1);
+            currCulprit.FireProjectileAt(window);
         }
-    }
-
-    void CalcCompleted()
-    {
-
     }
 }

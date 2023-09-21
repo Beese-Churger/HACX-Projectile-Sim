@@ -80,14 +80,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShootPosition: {fileID: 7699480028013600017}
-  currtarget: 1
+  currTarget: 1
   travelling: 0
   below: 1
   hit: 0
+  hitWindow1: 0
+  hitWindow2: 0
+  done: 0
+  canShoot: 0
   launchAngleMax: 0
   launchAngleMin: -90
   angle: 0
+  iterations1: 0
+  iterations2: 0
   AccuracyText: {fileID: 6414307671551196069}
+  Ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
 --- !u!1 &484209761539055410
 GameObject:
   m_ObjectHideFlags: 0

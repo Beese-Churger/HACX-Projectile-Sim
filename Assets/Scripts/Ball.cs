@@ -17,7 +17,7 @@ public class Ball : MonoBehaviour
     public float r;
     float p = 1.225f; //density of air 1.225kg/m^3
     public float area;
-    // Start is called before the first frame update
+
     private int target;
 
     private List<Window> targets;
@@ -29,7 +29,7 @@ public class Ball : MonoBehaviour
         distToGround = GetComponent<SphereCollider>().bounds.extents.y;
 
         dragCoefficient = 0.1f;
-            // get drag coefficient 
+        // get drag coefficient 
 
         r = distToGround;
         volume = (4 * Mathf.PI * r * r * r) / 3;
@@ -55,7 +55,7 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(IsGrounded())
+        if (IsGrounded())
         {
             GetComponent<SphereCollider>().isTrigger = true;
             rbody.velocity = Vector3.zero;
@@ -64,7 +64,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-           // Debug.Log(rbody.velocity.magnitude);
+            // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime(Time.deltaTime);
         }
 
@@ -80,7 +80,7 @@ public class Ball : MonoBehaviour
         Vector3 direction = -rbody.velocity.normalized;
         float velocity = rbody.velocity.magnitude;
         var forceAmount = (p * velocity * velocity * dragCoefficient * area) * 0.5f;
-       // Debug.Log("drag: " + forceAmount);
+        // Debug.Log("drag: " + forceAmount);
         rbody.AddForce(direction * forceAmount);
     }
 
@@ -88,10 +88,10 @@ public class Ball : MonoBehaviour
     {
 
     }
-    
-    public void setDragCoefficient(float newValue) 
+
+    public void setDragCoefficient(float newValue)
     {
-        dragCoefficient = newValue; 
+        dragCoefficient = newValue;
     }
 
     public void SetTarget(int tar)
@@ -100,25 +100,25 @@ public class Ball : MonoBehaviour
     }
     private void OnCollisionEnter(Collision other)
     {
-        if (!islaunched)
-            return;
         Culprit shooter = transform.root.GetComponent<Culprit>();
         if (other.transform.gameObject != targets[target].gameObject)
         {
             shooter.travelling = false;
-            shooter.hit = false;
+            rbody.isKinematic = true;
+            //if (transform.position.y < targets[target].transform.position.y)
+            //    shooter.below = true;
+            //else
+            //    shooter.below = false;
 
-            if (transform.position.y < targets[target].transform.position.y)
-                shooter.below = true;
-            else
-                shooter.below = false;
-
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
         else
         {
             Debug.Log("HIT TARGET: " + target);
-            shooter.hit = true;
+            if (target == 0)
+                shooter.hitWindow1 = true;
+            else if (target == 1)
+                shooter.hitWindow2 = true;
             shooter.travelling = false;
             rbody.isKinematic = true;
             rbody.velocity = Vector3.zero;
@@ -126,7 +126,7 @@ public class Ball : MonoBehaviour
             HitBall HB = new HitBall();
             HB.RelatedHumanGameObject = transform.parent.gameObject;
             HB.WindowHit = target;
-            if(target == 0)
+            if (target == 0)
                 HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
             else
                 HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
