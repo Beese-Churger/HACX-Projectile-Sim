@@ -150,7 +150,7 @@ public class SettingsMenu : MonoBehaviour
                 // Make sure accuracy is clamped between 0 and 1
                 accuracy = Mathf.Clamp01(accuracy);
                 // Lerp between green and red based on accuracy
-                Color targetColor = Color.Lerp(Color.green, Color.red, accuracy * 2);
+                Color targetColor = Color.Lerp(Color.green, Color.red, accuracy * 1.5f);
                 // Assign the target color to the material
                 B.RelatedHumanGameObject.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = targetColor;
             }
