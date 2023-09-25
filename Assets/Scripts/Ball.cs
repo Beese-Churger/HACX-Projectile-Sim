@@ -101,27 +101,66 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         Culprit shooter = transform.root.GetComponent<Culprit>();
+        if (other.transform.gameObject != targets[target].transform.GetChild(0).gameObject)
+        {
+            shooter.travelling = false;
+            rbody.isKinematic = true;            
+        }
+        else
+        {
+            shooter.travelling = false;
+            rbody.isKinematic = true;
+
+
+            if (target == 0)
+                shooter.hitWindow1 = true;
+
+            else if (target == 1)
+                shooter.hitWindow2 = true;
+
+
+
+            Debug.Log("HIT TARGET: " + target);
+
+            HitBall HB = new HitBall();
+            HB.RelatedHumanGameObject = transform.parent.gameObject;
+            HB.WindowHit = target;
+            if (target == 0)
+                HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
+            else
+                HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
+            HB.CalculateAccuracy();
+            HB.Hitposition = transform.position;
+            MainGameManager.instance.AddNewHitRegistryToList(HB);
+        }
+
+
+        if (target == 0 && (shooter.iterations1 < shooter.maxIterations))
+            return;
+
+        else if (target == 1 && (shooter.iterations2 < shooter.maxIterations))
+            return;
+
         if (other.transform.gameObject != targets[target].gameObject)
         {
             shooter.travelling = false;
             rbody.isKinematic = true;
-            //if (transform.position.y < targets[target].transform.position.y)
-            //    shooter.below = true;
-            //else
-            //    shooter.below = false;
-
-            //Destroy(gameObject);
         }
         else
         {
-            Debug.Log("HIT TARGET: " + target);
-            if (target == 0)
-                shooter.hitWindow1 = true;
-            else if (target == 1)
-                shooter.hitWindow2 = true;
             shooter.travelling = false;
             rbody.isKinematic = true;
-            rbody.velocity = Vector3.zero;
+
+
+            if (target == 0)
+                shooter.hitWindow1 = true;
+
+            else if (target == 1)
+                shooter.hitWindow2 = true;
+
+
+
+            Debug.Log("HIT TARGET: " + target);
 
             HitBall HB = new HitBall();
             HB.RelatedHumanGameObject = transform.parent.gameObject;

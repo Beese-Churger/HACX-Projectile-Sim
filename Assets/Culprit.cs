@@ -22,6 +22,7 @@ public class Culprit : MonoBehaviour
 
     public int iterations1;
     public int iterations2;
+    public int maxIterations;
 
     public TMP_Text AccuracyText;
 
@@ -31,23 +32,9 @@ public class Culprit : MonoBehaviour
     public GameObject Ball;
     private void Awake()
     {
-        //launchAngleMin = ShootPosition.eulerAngles.x;
-        launchAngleMax = -90f;
-        launchAngleMin = 0f;
-
-    }
-    public void Launch(int target)
-    {
-        currTarget = target;
-        travelling = true;
-        below = true;
-        hit = false;
-    }
-
-    public void ResetMinMax()
-    {
-        launchAngleMax = -90f;
-        launchAngleMin = 0;
+        iterations1 = 0;
+        iterations2 = 0;
+        maxIterations = 10;
     }
 
     private void Update()
@@ -57,7 +44,7 @@ public class Culprit : MonoBehaviour
 
         if (currTarget == 0)
         {
-            if (iterations1 >= 10)
+            if (iterations1 >= maxIterations)
                 return;
 
             if (hitWindow1)
@@ -65,7 +52,7 @@ public class Culprit : MonoBehaviour
         }
         else if (currTarget == 1)
         {
-            if (iterations2 >= 10)
+            if (iterations2 >= maxIterations)
             {
                 done = true;
                 return;
@@ -86,15 +73,17 @@ public class Culprit : MonoBehaviour
             {
                 launchAngleMax = angle;
             }
-            else
+            else if(go.transform.position.y < targets[currTarget].transform.position.y)
             {
                 launchAngleMin = angle;
             }
-            Destroy(go);
-            angle = launchAngleMin + launchAngleMax * 0.5f;
+          
+            angle = (launchAngleMin + launchAngleMax) * 0.5f;
+            //Debug.Log(angle + " " + launchAngleMin + " " + launchAngleMax);
             Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
             Quaternion finalRotation = targetRotation * tiltRotation;
             ShootPosition.rotation = finalRotation;
+            Destroy(go);
             go = Instantiate(Ball, ShootPosition.position, ShootPosition.rotation, ShootPosition.root);
             go.GetComponent<Ball>().SetTarget(currTarget);
             travelling = true;
@@ -116,11 +105,12 @@ public class Culprit : MonoBehaviour
 
     public void FireProjectileAt(int window)
     {
+        maxIterations = SettingsMenu.instance.GetMaxIterations();
+
         targets = MainGameManager.instance.GetWindows();
-        iterations1 = 0;
-        iterations2 = 0;
+
         launchAngleMax = -90f;
-        launchAngleMin = 0;
+ 
         currTarget = window;
 
         Vector3 dir = targets[currTarget].transform.position - ShootPosition.position;
@@ -128,11 +118,24 @@ public class Culprit : MonoBehaviour
         targetRotation = Quaternion.LookRotation(dir);
 
         angle = transform.rotation.eulerAngles.x;
+        launchAngleMin = angle;
         ShootPosition.rotation = targetRotation;
 
         go = Instantiate(Ball, ShootPosition.position, ShootPosition.rotation, ShootPosition.root);
         go.GetComponent<Ball>().SetTarget(currTarget);
         travelling = true;
         canShoot = false;
+
+        switch (currTarget)
+        {
+            case 0:
+                iterations1++;
+                break;
+            case 1:
+                iterations2++;
+                break;
+            default:
+                break;
+        }
     }
 }

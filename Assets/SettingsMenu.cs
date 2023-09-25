@@ -11,7 +11,7 @@ public class SettingsMenu : MonoBehaviour
     public Slider CalculationDensitySlider;
     public Slider DragCoefficientSlider; 
     public Slider SimulationSpeedSlider;
-    public Slider AngleIncrementSlider;
+    public Slider MaxIterationsSlider;
 
     public List<AreaSplitManager> SplitManagers = new List<AreaSplitManager>();
     public MainGameManager MGM;
@@ -30,10 +30,10 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("SliderValues")]
     public TMP_Text DragCoeffecientValueText;
-    public TMP_Text CalculationDensValueText, SimSpeedValueText, AngIncValueText;
+    public TMP_Text CalculationDensValueText, SimSpeedValueText, MaxIterationsValueText;
 
     private float drag = 0.47f;
-    private int AngleIncrement = 5;
+    private int MaxIterations = 10;
 
     public void ToggleBallTracers()
     {
@@ -72,7 +72,7 @@ public class SettingsMenu : MonoBehaviour
         CalculationDensValueText.text = ((int)CalculationDensitySlider.value).ToString();
         DragCoeffecientValueText.text = DragCoefficientSlider.value.ToString("F2");
         SimSpeedValueText.text = SimulationSpeedSlider.value.ToString("F1");
-        AngIncValueText.text = (AngleIncrementSlider.value).ToString("F1");
+        MaxIterationsValueText.text = (MaxIterationsSlider.value).ToString("F1");
     }
 
 
@@ -169,14 +169,14 @@ public class SettingsMenu : MonoBehaviour
         Time.timeScale = SimulationSpeedSlider.value;
         ChangeAllSliderValueTexts();
     }
-    public void OnAngleIncrementChange()
+    public void OnMaxIterationsChange()
     {
-        AngleIncrement = (int)AngleIncrementSlider.value;
+        MaxIterations = (int)MaxIterationsSlider.value;
         ChangeAllSliderValueTexts();
     }
-    public int GetAngleIncrement()
+    public int GetMaxIterations()
     {
-        return AngleIncrement;
+        return MaxIterations;
     }
     public float GetDragCoefficient() 
     {

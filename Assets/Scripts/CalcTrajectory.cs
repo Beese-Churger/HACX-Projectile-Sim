@@ -73,8 +73,23 @@ public class CalcTrajectory : MonoBehaviour
         {
             Culprit curr = culprits[i].GetComponent<Culprit>();
 
-            if ((!curr.hitWindow1 && window == 0) || (!curr.hitWindow2 && window == 1))
-                return false;
+            if(window == 0)
+            {
+                if(curr.iterations1 < curr.maxIterations)
+                {
+                    if (!curr.hitWindow1)
+                        return false;
+                }
+            }
+
+            if (window == 1)
+            {
+                if (curr.iterations2 < curr.maxIterations)
+                {
+                    if (!curr.hitWindow2)
+                        return false;
+                }
+            }
         }
         return true;
     }
