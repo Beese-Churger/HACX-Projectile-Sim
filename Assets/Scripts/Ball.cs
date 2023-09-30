@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
     public float area;
 
     private int target;
-
+    Vector3 vel;
     private List<Window> targets;
     void Awake()
     {
@@ -55,17 +55,18 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (IsGrounded())
+        if (IsGrounded() || rbody.isKinematic)
         {
-            GetComponent<SphereCollider>().isTrigger = true;
-            rbody.velocity = Vector3.zero;
-            rbody.angularVelocity = Vector3.zero;
-            rbody.useGravity = false;
+            //GetComponent<SphereCollider>().isTrigger = true;
+            //rbody.velocity = Vector3.zero;
+            //rbody.angularVelocity = Vector3.zero;
+            //rbody.useGravity = false;
         }
         else
         {
             // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime(Time.deltaTime);
+            vel = rbody.velocity;
         }
 
     }
@@ -101,16 +102,21 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         Culprit shooter = transform.root.GetComponent<Culprit>();
-        if (other.transform.gameObject != targets[target].transform.GetChild(0).gameObject)
+        if (other.transform.gameObject != targets[target].transform.gameObject)
         {
             shooter.travelling = false;
             rbody.isKinematic = true;            
         }
         else
         {
+            //Vector3 vel = rbody.velocity;
+            Vector3 normal = other.contacts[0].normal;
             shooter.travelling = false;
             rbody.isKinematic = true;
+            transform.position = other.contacts[0].point;
 
+            if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+                return;
 
             if (target == 0)
                 shooter.hitWindow1 = true;
@@ -126,9 +132,15 @@ public class Ball : MonoBehaviour
             HB.RelatedHumanGameObject = transform.parent.gameObject;
             HB.WindowHit = target;
             if (target == 0)
+            {
                 HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
+                shooter.angle1 = Vector3.Angle(vel, -normal);
+            }
             else
+            {
                 HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
+                shooter.angle2 = Vector3.Angle(vel, -normal);
+            }
             HB.CalculateAccuracy();
             HB.Hitposition = transform.position;
             MainGameManager.instance.AddNewHitRegistryToList(HB);
@@ -148,9 +160,15 @@ public class Ball : MonoBehaviour
         }
         else
         {
+            //Vector3 vel = rbody.velocity;
+            Vector3 normal = other.contacts[0].normal;
+
             shooter.travelling = false;
             rbody.isKinematic = true;
+            transform.position = other.contacts[0].point;
 
+            if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+                return;
 
             if (target == 0)
                 shooter.hitWindow1 = true;
@@ -166,9 +184,15 @@ public class Ball : MonoBehaviour
             HB.RelatedHumanGameObject = transform.parent.gameObject;
             HB.WindowHit = target;
             if (target == 0)
+            {
                 HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
+                shooter.angle1 = Vector3.Angle(vel, -normal);
+            }
             else
+            {
                 HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
+                shooter.angle2 = Vector3.Angle(vel, -normal);
+            }
             HB.CalculateAccuracy();
             HB.Hitposition = transform.position;
             MainGameManager.instance.AddNewHitRegistryToList(HB);

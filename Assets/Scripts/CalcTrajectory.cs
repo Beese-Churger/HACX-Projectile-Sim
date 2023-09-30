@@ -14,7 +14,7 @@ public class CalcTrajectory : MonoBehaviour
     bool launch1 = false;
     bool launch2 = false;
 
-    int maxIteration = 10;
+    //int maxIteration = 10;
 
     public SettingsMenu SM;
 

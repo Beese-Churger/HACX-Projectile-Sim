@@ -20,6 +20,9 @@ public class Culprit : MonoBehaviour
     public float launchAngleMin = -90f;
     public float angle;
 
+    public float angle1;
+    public float angle2;
+
     public int iterations1;
     public int iterations2;
     public int maxIterations;

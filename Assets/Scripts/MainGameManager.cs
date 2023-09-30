@@ -298,19 +298,29 @@ public class HitBall
     public int WindowHit;
     public float DistanceFromCenterW1, DistanceFromCenterW2;
     public float Accuracy;
+    //public float Angle1;
+    //public float Angle2;
     public Vector3 Hitposition;
     public void CalculateAccuracy()
     {
-        if(WindowHit == 0)
+        Culprit shooter = RelatedHumanGameObject.GetComponent<Culprit>();
+        if (WindowHit == 0)
         {
-            Accuracy = DistanceFromCenterW1;
+            //Accuracy = DistanceFromCenterW1;
+            Accuracy = (90 - (shooter.angle1)) / 90;
         }
         else if(WindowHit == 1)
         {
-            Accuracy = DistanceFromCenterW2;
+            //Accuracy = DistanceFromCenterW2;
+            Accuracy = (90 - (shooter.angle2)) / 90;
         }
-        else if(WindowHit == 2)            
-            Accuracy = (DistanceFromCenterW1 + DistanceFromCenterW2) / 2;
+        else if(WindowHit == 2)
+        {
+
+            //Accuracy = (DistanceFromCenterW1 + DistanceFromCenterW2) / 2;
+            Accuracy = (90 - ((shooter.angle1 + shooter.angle2) * 0.5f)) / 90 ;
+        }
+
         RelatedHumanGameObject.GetComponent<Culprit>().AccuracyText.text = Accuracy.ToString("F2");
     }
 }
