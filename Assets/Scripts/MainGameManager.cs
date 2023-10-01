@@ -21,7 +21,7 @@ public class MainGameManager : MonoBehaviour
     [Header("MainGameUI")]
     public GameObject MainGameUI;
     public GameObject SimButton;
-    public GameObject RealButton;
+    public GameObject BackButton;
 
     [Header("window")]
     public Color SelectHighlightColor = Color.green;
@@ -68,7 +68,6 @@ public class MainGameManager : MonoBehaviour
         RegisteredHits.Clear();
         RegisteredHitsOnBothWindows.Clear();
         SimButton.SetActive(false);
-        RealButton.SetActive(false);
         SettingsMenu.instance.CleanUp();
         CT.CleanUp();
         PostResultsUIGO.SetActive(false);
@@ -128,6 +127,19 @@ public class MainGameManager : MonoBehaviour
         MainGameUI.SetActive(true);
     }
 
+    public void QuitApplication()
+    {
+        Application.Quit();
+    }
+
+    public void SelectToMain()
+    {
+        foreach (Window GO in SelectedWindows)
+        {
+            ResetWindowColor(GO.gameObject);
+        }
+        SelectedWindows.Clear();
+    }
     public void TransitionToSettings()
     {
         CameraAnimator.CrossFade(CameraToSettingsTransition.name, TransitionSpeed);
@@ -173,7 +185,6 @@ public class MainGameManager : MonoBehaviour
                 if (SelectedWindows.Count == 2)
                 {
                     SimButton.SetActive(true);
-                    RealButton.SetActive(true);
                 }
                 return;
             }
