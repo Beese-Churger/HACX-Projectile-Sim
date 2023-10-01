@@ -18,6 +18,13 @@ public class CalcTrajectory : MonoBehaviour
 
     public SettingsMenu SM;
 
+    public void CleanUp()
+    {
+        ViableCulprits1.Clear();
+        ViableCulprits2.Clear();
+
+    }
+
     public void CalculatePath()
     {
         FindViableCulprits();
@@ -33,6 +40,7 @@ public class CalcTrajectory : MonoBehaviour
         Debug.Log("SortedList!");
         MainGameManager.instance.SortDuplicateHits();
         MainGameManager.instance.ToggleBothWindowHavers();
+        SettingsMenu.instance.CalculateAccuracies();
         GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
         foreach (GameObject ball in balls)
         {

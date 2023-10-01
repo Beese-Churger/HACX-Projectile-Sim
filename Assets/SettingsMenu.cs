@@ -34,6 +34,27 @@ public class SettingsMenu : MonoBehaviour
 
     private float drag = 0.47f;
     private int MaxIterations = 10;
+    public Slider AccuracyLimitSlider;
+    float LowestAccuracy = 100f, HighestAccuracy = 0f;
+
+    public void CleanUp()
+    {
+        foreach(GameObject GO in Balls)
+        {
+            Destroy(GO);
+        }
+        Balls.Clear();
+    }
+    public void OnChangeAccuracyLimitSlider()
+    {
+        foreach (GameObject B in MainGameManager.instance.SpawnedCulprits)
+        {
+            Culprit C = B.GetComponent<Culprit>();
+            float accuracy = ScaleValue(float.Parse(C.AccuracyText.text), LowestAccuracy, HighestAccuracy);
+            if (accuracy > AccuracyLimitSlider.value && C.hitWindow1 && C.hitWindow2) B.SetActive(true);
+            else B.SetActive(false);
+        }
+    }
 
     public void ToggleBallTracers()
     {
@@ -132,6 +153,23 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    public void CalculateAccuracies()
+    {
+        foreach (GameObject B in MainGameManager.instance.SpawnedCulprits)
+        {
+            Culprit C = B.GetComponent<Culprit>();
+            float Acc = float.Parse(C.AccuracyText.text);
+            if (LowestAccuracy > Acc && Acc != 0)
+            {
+                LowestAccuracy = Acc;
+            }
+            if (HighestAccuracy < Acc && Acc != 0)
+            {
+                HighestAccuracy = Acc;
+            }
+        }
+    }
+
     public void ToggleHM()
     {
         if (HMIsOn)
@@ -144,20 +182,23 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            foreach (HitBall B in MainGameManager.instance.RegisteredHits)
+          
+            foreach (GameObject B in MainGameManager.instance.SpawnedCulprits)
             {
-                float accuracy = B.Accuracy;
-                // Make sure accuracy is clamped between 0 and 1
-                accuracy = Mathf.Clamp01(accuracy);
+                Culprit C = B.GetComponent<Culprit>();
+                float accuracy = ScaleValue(float.Parse(C.AccuracyText.text), LowestAccuracy, HighestAccuracy);
                 // Lerp between green and red based on accuracy
-                Color targetColor = Color.Lerp(Color.green, Color.red, accuracy * 1.5f);
+                Color targetColor = Color.Lerp(Color.red, Color.green, accuracy);
                 // Assign the target color to the material
-                B.RelatedHumanGameObject.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = targetColor;
+                C.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = targetColor;
             }
             HMIsOn = true;
         }
     }
-
+    float ScaleValue(float initialValue, float minValue, float maxValue)
+    {
+        return Mathf.Clamp01((initialValue - minValue) / (maxValue - minValue));
+    }
     public void OnDragChange()
     {
         drag = DragCoefficientSlider.value;

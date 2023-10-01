@@ -45,6 +45,54 @@ public class MainGameManager : MonoBehaviour
     public TMP_Text DisplayingCulpritText;
     public Toggle ToggleHeatMap, ToggleAccuracy;
     public GameObject PostResultsUIGO;
+
+    [Header("PostClaculationSettings")]
+    public List<GameObject> GameObjectsTobeDisabled = new List<GameObject>();
+    bool isToggled = false;
+    public CalcTrajectory CT;
+
+    public void CleanUpForRestart()
+    {
+        foreach(GameObject GO in SpawnedCulprits)
+        {
+            GO.SetActive(true);
+            GO.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
+            GO.GetComponent<Culprit>().Cleanup();
+        }
+        Window[] Windows = GameObject.FindObjectsOfType<Window>();
+        foreach(Window GO in Windows)
+        {
+            GO.gameObject.GetComponent<MeshRenderer>().material.color = OriginalWindowMaterial.color;
+        }
+        SelectedWindows.Clear();
+        RegisteredHits.Clear();
+        RegisteredHitsOnBothWindows.Clear();
+        SimButton.SetActive(false);
+        RealButton.SetActive(false);
+        SettingsMenu.instance.CleanUp();
+        CT.CleanUp();
+        PostResultsUIGO.SetActive(false);
+        StartGame();
+    }
+    public void ToggleItemTransparency()
+    {
+        if(isToggled)
+        {
+            isToggled = false;
+            foreach(GameObject GO in GameObjectsTobeDisabled)
+            {
+                GO.SetActive(true);
+            }
+        }
+        else
+        {
+            isToggled = true;
+            foreach (GameObject GO in GameObjectsTobeDisabled)
+            {
+                GO.SetActive(false);
+            }
+        }
+    }
     
     public void ResetCulprits()
     {
@@ -98,11 +146,11 @@ public class MainGameManager : MonoBehaviour
             {
                 currentlyHoveredWindow = hitObject.GetComponent<Window>();
                 Renderer renderer = hitObject.GetComponent<Renderer>();
-                if (!currentlyHoveredWindow.isSelected)
+                if (currentlyHoveredWindow && !currentlyHoveredWindow.isSelected)
                 {
                     renderer.material.color = SelectHighlightColor;
                 }
-                else if (currentlyHoveredWindow.isSelected)
+                else if (currentlyHoveredWindow && currentlyHoveredWindow.isSelected)
                 {
                     renderer.material.color = DeselectHighlightColor;
                 }

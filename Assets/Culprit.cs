@@ -29,10 +29,22 @@ public class Culprit : MonoBehaviour
 
     public TMP_Text AccuracyText;
 
-    private List<Window> targets;
+    private List<Window> targets = new List<Window>();
     Quaternion targetRotation;
     GameObject go;
     public GameObject Ball;
+
+    public void Cleanup()
+    {
+        done = false;
+        hitWindow1 = false; hitWindow2 = false;
+        iterations1 = 0; iterations2 = 0;
+        AccuracyText.gameObject.SetActive(false);
+        travelling = false;
+        hit = false;
+        below = true;
+        targets.Clear();
+    }
     private void Awake()
     {
         iterations1 = 0;
