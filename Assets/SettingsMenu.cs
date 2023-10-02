@@ -9,7 +9,8 @@ public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu instance; 
     public Slider CalculationDensitySlider;
-    public Slider DragCoefficientSlider; 
+    public Slider DragCoefficientSlider;
+    public Slider InitialVelocitySlider;
     public Slider SimulationSpeedSlider;
     public Slider MaxIterationsSlider;
 
@@ -29,11 +30,12 @@ public class SettingsMenu : MonoBehaviour
     public List<GameObject> SettingsWindows = new List<GameObject>();
 
     [Header("SliderValues")]
-    public TMP_Text DragCoeffecientValueText;
+    public TMP_Text DragCoeffecientValueText, InitialVelocityValueText;
     public TMP_Text CalculationDensValueText, SimSpeedValueText, MaxIterationsValueText;
 
     private float drag = 0.47f;
     private int MaxIterations = 10;
+    private int InitVel = 70;
     public Slider AccuracyLimitSlider;
     float LowestAccuracy = 100f, HighestAccuracy = 0f;
 
@@ -91,9 +93,11 @@ public class SettingsMenu : MonoBehaviour
     public void ChangeAllSliderValueTexts()
     {
         CalculationDensValueText.text = ((int)CalculationDensitySlider.value).ToString();
+        InitialVelocityValueText.text = ((int)InitialVelocitySlider.value).ToString();
         DragCoeffecientValueText.text = DragCoefficientSlider.value.ToString("F2");
         SimSpeedValueText.text = SimulationSpeedSlider.value.ToString("F1");
-        MaxIterationsValueText.text = (MaxIterationsSlider.value).ToString("F1");
+        MaxIterationsValueText.text = ((int)MaxIterationsSlider.value).ToString();
+
     }
 
 
@@ -215,6 +219,11 @@ public class SettingsMenu : MonoBehaviour
         MaxIterations = (int)MaxIterationsSlider.value;
         ChangeAllSliderValueTexts();
     }
+    public void OnInitVelChange()
+    {
+        InitVel = (int)InitialVelocitySlider.value;
+        ChangeAllSliderValueTexts();
+    }
     public int GetMaxIterations()
     {
         return MaxIterations;
@@ -222,5 +231,10 @@ public class SettingsMenu : MonoBehaviour
     public float GetDragCoefficient() 
     {
         return  drag;
+    }
+
+    public int GetInitVel()
+    {
+        return InitVel;
     }
 }

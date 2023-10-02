@@ -36,7 +36,9 @@ public class Ball : MonoBehaviour
         rbody.mass = density * volume; // in grams
 
         area = 2 * Mathf.PI * r * r;
-        force = rbody.mass * 70;
+
+        initialVel = SettingsMenu.instance.GetInitVel();
+        force = rbody.mass * initialVel;
 
         // Assuming that 'transform.forward' represents the direction the ball is facing.
         Vector3 facingDirection = transform.forward;
