@@ -17,7 +17,7 @@ public class Ball : MonoBehaviour
     public float r;
     float p = 1.225f; //density of air 1.225kg/m^3
     public float area;
-
+    public Material window1;
     private int target;
     Vector3 vel;
     private List<Window> targets;
@@ -100,6 +100,11 @@ public class Ball : MonoBehaviour
     public void SetTarget(int tar)
     {
         target = tar;
+        if (target==0)
+        {
+            TrailRenderer window_1 = gameObject.GetComponent<TrailRenderer>();
+            window_1.material = window1;
+        }
     }
     private void OnCollisionEnter(Collision other)
     {

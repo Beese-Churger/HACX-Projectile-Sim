@@ -135,6 +135,7 @@ MonoBehaviour:
   initialVel: 70
   r: 0
   area: 0
+  window1: {fileID: 2100000, guid: c09b43bd7a44e824cb4152f4b1c60f4a, type: 2}
 --- !u!96 &106663636556536878
 TrailRenderer:
   serializedVersion: 2
