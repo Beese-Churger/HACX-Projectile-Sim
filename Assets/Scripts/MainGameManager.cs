@@ -51,6 +51,7 @@ public class MainGameManager : MonoBehaviour
     bool isToggled = false;
     public CalcTrajectory CT;
 
+    // This function resets GameObject states before restarting simulation
     public void CleanUpForRestart()
     {
         foreach (GameObject GO in SpawnedCulprits)
@@ -71,32 +72,32 @@ public class MainGameManager : MonoBehaviour
         SettingsMenu.instance.CleanUp();
         CT.CleanUp();
         PostResultsUIGO.SetActive(false);
+        RefreshItemTransparency();
+
+        // Start the next game
+        StartGame();
+    }
+
+    // This function inverts the current state of the buildings
+    public void ToggleItemTransparency()
+    {
+        foreach(GameObject GO in GameObjectsTobeDisabled)
+        {
+            GO.SetActive(isToggled);
+        }
+        isToggled = !isToggled;
+    }
+    
+    // This function makes all the current buildings not transparent
+    public void RefreshItemTransparency()
+    {
+        isToggled = true;
         foreach (GameObject GO in GameObjectsTobeDisabled)
         {
             GO.SetActive(true);
         }
-        StartGame();
     }
-    public void ToggleItemTransparency()
-    {
-        if(isToggled)
-        {
-            isToggled = false;
-            foreach(GameObject GO in GameObjectsTobeDisabled)
-            {
-                GO.SetActive(true);
-            }
-        }
-        else
-        {
-            isToggled = true;
-            foreach (GameObject GO in GameObjectsTobeDisabled)
-            {
-                GO.SetActive(false);
-            }
-        }
-    }
-    
+
     public void ResetCulprits()
     {
         foreach(GameObject GO in SpawnedCulprits)
