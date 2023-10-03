@@ -53,14 +53,14 @@ public class MainGameManager : MonoBehaviour
 
     public void CleanUpForRestart()
     {
-        foreach(GameObject GO in SpawnedCulprits)
+        foreach (GameObject GO in SpawnedCulprits)
         {
             GO.SetActive(true);
             GO.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material.color = Color.red;
             GO.GetComponent<Culprit>().Cleanup();
         }
         Window[] Windows = GameObject.FindObjectsOfType<Window>();
-        foreach(Window GO in Windows)
+        foreach (Window GO in Windows)
         {
             GO.gameObject.GetComponent<MeshRenderer>().material.color = OriginalWindowMaterial.color;
         }
@@ -71,6 +71,10 @@ public class MainGameManager : MonoBehaviour
         SettingsMenu.instance.CleanUp();
         CT.CleanUp();
         PostResultsUIGO.SetActive(false);
+        foreach (GameObject GO in GameObjectsTobeDisabled)
+        {
+            GO.SetActive(true);
+        }
         StartGame();
     }
     public void ToggleItemTransparency()
