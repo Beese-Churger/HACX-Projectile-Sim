@@ -39,6 +39,8 @@ public class SettingsMenu : MonoBehaviour
     public Slider AccuracyLimitSlider;
     float LowestAccuracy = 100f, HighestAccuracy = 0f;
 
+    public Camera freeCam;
+
     public void CleanUp()
     {
         foreach(GameObject GO in Balls)
@@ -46,6 +48,8 @@ public class SettingsMenu : MonoBehaviour
             Destroy(GO);
         }
         Balls.Clear();
+        freeCam.transform.position = new Vector3(0, 15, -20);
+        freeCam.transform.rotation = Quaternion.identity;
     }
     public void OnChangeAccuracyLimitSlider()
     {

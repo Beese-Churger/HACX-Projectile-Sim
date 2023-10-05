@@ -24,6 +24,7 @@ public class MainGameManager : MonoBehaviour
     public GameObject BackButton;
 
     [Header("window")]
+    public Camera MCam;
     public Color SelectHighlightColor = Color.green;
     public Color selectedColor = Color.red;
     public Color DeselectHighlightColor;
@@ -152,7 +153,7 @@ public class MainGameManager : MonoBehaviour
 
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = MCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
