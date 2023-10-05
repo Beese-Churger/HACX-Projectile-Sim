@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -53,6 +54,11 @@ public class MainGameManager : MonoBehaviour
     public CalcTrajectory CT;
 
     // This function resets GameObject states before restarting simulation
+
+    public void ResetWholeScene()
+    {
+        SceneManager.LoadScene(0);
+    }
     public void CleanUpForRestart()
     {
         foreach (GameObject GO in SpawnedCulprits)
