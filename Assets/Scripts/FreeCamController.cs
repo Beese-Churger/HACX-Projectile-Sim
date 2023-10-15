@@ -9,7 +9,7 @@ public class FreeCamController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Vertical") > 0)
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             // Basic movement
             float horizontal = Input.GetAxis("Horizontal");

@@ -8,7 +8,7 @@ public class Framerate : MonoBehaviour
     [SerializeField] TMP_Text fps;
     private Dictionary<int, string> CachedNumberStrings = new();
     private int[] _frameRateSamples;
-    private int _cacheNumbersAmount = 300;
+    private int _cacheNumbersAmount = 3000;
     private int _averageFromAmount = 30;
     private int _averageCounter = 0;
     private int _currentAveraged;
@@ -28,7 +28,7 @@ public class Framerate : MonoBehaviour
     {
         // Sample
         {
-            var currentFrame = (int)Math.Round(1f / Time.smoothDeltaTime); // If your game modifies Time.timeScale, use unscaledDeltaTime and smooth manually (or not).
+            var currentFrame = (int)Math.Round(1f / Time.unscaledDeltaTime); // If your game modifies Time.timeScale, use unscaledDeltaTime and smooth manually (or not).
             _frameRateSamples[_averageCounter] = currentFrame;
         }
 
