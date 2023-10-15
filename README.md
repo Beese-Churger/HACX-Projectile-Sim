@@ -18,7 +18,8 @@ Link to website: https://hacx.sg/challenge/
 # How to install the application
 1. Download the zip file
 2. Inside there will be the exe file. Double click to open it
-3. Vioia! Enjoy the simulation
+3. (do NOT open the unity crash handler exe, instead open the one that says the name on it)
+4. Vioia! Enjoy the simulation
 
 # How to run the EXE
 1. Open the EXE programme
