@@ -15,15 +15,20 @@ Explore potential methods of accurately estimating the path of a projectile laun
 
 Link to website: https://hacx.sg/challenge/
 
-# How to install the application
-1. Download the zip file
-2. Inside there will be the exe file. Double click to open it
-3. (do NOT open the unity crash handler exe, instead open the one that says the name on it)
-4. Vioia! Enjoy the simulation
+# Important Links
+| Name  | Link |
+| ------------- | ------------- |
+| Product Specification Document | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc/edit?usp=sharing  |
+| Pitch Deck  | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc/edit?usp=sharing  |
 
-# How to run the EXE
-1. Open the EXE programme
-2. Hit start
-3. Select 2 target windows and hit run simulation
-4. Wait for simulation to run and view results!
-5. The most likely culprit position will be highlighted in cyan
+# Getting Started
+## Windows
+1. Go to releases and download ProjectileSimulator.zip
+2. Click on ```Projectile Simulator.exe``` to run the game
+3. Vioia! Enjoy the simulation
+
+# Running the Program
+1. Hit start
+2. Select 2 target windows and hit run simulation
+3. Wait for simulation to run and view results!
+4. The most likely culprit position will be highlighted in cyan
