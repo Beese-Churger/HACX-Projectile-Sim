@@ -91,8 +91,13 @@ MonoBehaviour:
   launchAngleMax: 0
   launchAngleMin: -90
   angle: 0
+  angle1: 0
+  angle2: 0
   iterations1: 0
   iterations2: 0
+  maxIterations: 0
+  row: 0
+  column: 0
   AccuracyText: {fileID: 6414307671551196069}
   Ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
 --- !u!1 &484209761539055410

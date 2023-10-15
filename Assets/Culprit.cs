@@ -27,6 +27,10 @@ public class Culprit : MonoBehaviour
     public int iterations2;
     public int maxIterations;
 
+    [Header("RowAndColumn")]
+    public int row;
+    public int column;
+
     public TMP_Text AccuracyText;
 
     private List<Window> targets = new List<Window>();

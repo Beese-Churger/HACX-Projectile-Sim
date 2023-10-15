@@ -9,7 +9,7 @@ public class AreaSplitManager : MonoBehaviour
     public float DeadzoneRadius = 0.5f;
     public GameObject objectToSpawn; // The object you want to spawn
     public MainGameManager mainGameManager;
-
+    public int row;
     private void Start()
     {
         SpawnCulprits();
@@ -26,7 +26,7 @@ public class AreaSplitManager : MonoBehaviour
         if (!mainGameManager) mainGameManager = MainGameManager.instance;
         Vector3 boxSize = GetComponent<Renderer>().bounds.size;
         float areaWidth = boxSize.x / numberOfAreas;
-
+        int s = 1;
         for (int i = 0; i < numberOfAreas; i++)
         {
 
@@ -39,6 +39,9 @@ public class AreaSplitManager : MonoBehaviour
                 mainGameManager.SpawnedCulprits.Add(GO);
                 GO.name = "Culprit" + mainGameManager.SpawnedCulprits.Count;
                 Culprit culprit = GO.GetComponent<Culprit>();
+                culprit.column = s;
+                culprit.row = row;
+                s++;
                 mainGameManager.CulpritPositions.Add(culprit.ShootPosition.position);
             }
         }

@@ -163,8 +163,9 @@ public class SettingsMenu : MonoBehaviour
 
     public void CalculateAccuracies()
     {
-        foreach (GameObject B in MainGameManager.instance.SpawnedCulprits)
+        foreach (HitBall A in MainGameManager.instance.RegisteredHitsOnBothWindows)
         {
+            GameObject B = A.RelatedHumanGameObject;
             Culprit C = B.GetComponent<Culprit>();
             float Acc = float.Parse(C.AccuracyText.text);
             if (LowestAccuracy > Acc && Acc != 0)
@@ -191,8 +192,9 @@ public class SettingsMenu : MonoBehaviour
         else
         {
           
-            foreach (GameObject B in MainGameManager.instance.SpawnedCulprits)
+            foreach (HitBall A in MainGameManager.instance.RegisteredHitsOnBothWindows)
             {
+                GameObject B = A.RelatedHumanGameObject;
                 Culprit C = B.GetComponent<Culprit>();
                 float accuracy = ScaleValue(float.Parse(C.AccuracyText.text), LowestAccuracy, HighestAccuracy);
                 // Lerp between green and red based on accuracy

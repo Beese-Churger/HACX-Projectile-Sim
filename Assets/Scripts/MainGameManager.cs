@@ -52,6 +52,7 @@ public class MainGameManager : MonoBehaviour
     public List<GameObject> GameObjectsTobeDisabled = new List<GameObject>();
     bool isToggled = false;
     public CalcTrajectory CT;
+    public TMP_Text highestAcc;
 
     // This function resets GameObject states before restarting simulation
 
@@ -290,13 +291,29 @@ public class MainGameManager : MonoBehaviour
 
     public void ToggleBothWindowHavers()
     {
+        //float maxacc = 0;
+        HitBall maxBall = RegisteredHitsOnBothWindows[0];
         foreach (HitBall B in RegisteredHitsOnBothWindows)
         {
+
             if (B.canHitBoth)
             {
+                if (B.Accuracy > maxBall.Accuracy)
+                {
+                    maxBall = B;
+                  
+                }
+
+
                 B.RelatedHumanGameObject.SetActive(true);
             }
         }
+        highestAcc.text = "Most likely culprit at Row: " + maxBall.RelatedHumanGameObject.GetComponent<Culprit>().row + ", Col:" + maxBall.RelatedHumanGameObject.GetComponent<Culprit>().column + " has Acc of " + maxBall.Accuracy.ToString("F1") + "%";
+        Material M = maxBall.RelatedHumanGameObject.transform.Find("Model").GetComponent<SkinnedMeshRenderer>().material;
+        M.EnableKeyword("_EMISSION");
+        //before we can set the color
+        M.SetColor("_EmissionColor", Color.cyan);
+        
     }
 
     public void ToggleSecondWindowHavers()
