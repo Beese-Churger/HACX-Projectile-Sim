@@ -291,7 +291,8 @@ public class MainGameManager : MonoBehaviour
 
     public void ToggleBothWindowHavers()
     {
-        //float maxacc = 0;
+        //float maxacc = 0;]
+        if (RegisteredHitsOnBothWindows.Count <= 0) return;
         HitBall maxBall = RegisteredHitsOnBothWindows[0];
         foreach (HitBall B in RegisteredHitsOnBothWindows)
         {
@@ -376,6 +377,15 @@ public class MainGameManager : MonoBehaviour
             }
         }
     }
+
+    public void EnableFreeCam()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+
+
 }
 
 [System.Serializable]
