@@ -41,6 +41,40 @@ public class SettingsMenu : MonoBehaviour
 
     public Camera freeCam;
 
+    [Header("EditBuildingProperties")]
+    public Slider BuildingFloorSlider;
+    int currentFloor;
+    public GameObject BuildingFloorPrefab;
+    public Transform[] PlacesToAddBuildingTo;
+    public List<GameObject> FloorsAdded = new List<GameObject>();
+    public GameObject[] Roofs;
+    public float OriginalRoofY;
+    //bool flip = false;
+    public void OnFloorSliderChange()
+    {
+        foreach (GameObject GO in FloorsAdded) Destroy(GO);
+        FloorsAdded.Clear();
+        int floorsToAdd = (int)BuildingFloorSlider.value - 7;
+        foreach(Transform T in PlacesToAddBuildingTo)
+        {
+            for(int i = 0; i < floorsToAdd; i++)
+            {
+                GameObject GO = Instantiate(BuildingFloorPrefab);
+                Vector3 Position = T.position;
+                Position.y = (float)T.position.y + i * 3.6f;
+                GO.transform.position = Position;
+                FloorsAdded.Add(GO);
+            }
+        }
+
+        foreach(GameObject GO in Roofs)
+        {
+            Vector3 vec = GO.transform.position;
+            vec.y = OriginalRoofY + (floorsToAdd) * 3.6f;
+            GO.transform.position = vec;
+        }
+    }
+
     public void CleanUp()
     {
         foreach(GameObject GO in Balls)
@@ -86,6 +120,7 @@ public class SettingsMenu : MonoBehaviour
         } else {
             Destroy(this);
         }
+        OriginalRoofY = Roofs[0].transform.position.y;
     }
     private void Awake()
     {
