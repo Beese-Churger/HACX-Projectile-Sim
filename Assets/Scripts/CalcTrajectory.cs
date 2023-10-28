@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CalcTrajectory : MonoBehaviour
 {
@@ -18,15 +19,24 @@ public class CalcTrajectory : MonoBehaviour
 
     public SettingsMenu SM;
 
+    public GameObject SimUI;
+    public TMP_Text maxiter;
+    public TMP_Text iter1;
+    public TMP_Text iter2;
+
+    int currIter1 = 0;
+    int currIter2 = 0;
     public void CleanUp()
     {
         ViableCulprits1.Clear();
         ViableCulprits2.Clear();
-
+        currIter1 = 0;
+        currIter2 = 0;
     }
 
     public void CalculatePath()
     {
+        maxiter.text = "Max Iterations: " + SettingsMenu.instance.GetMaxIterations().ToString();
         FindViableCulprits();
         LaunchBalls(ViableCulprits1, 0);
         launch1 = true;
@@ -53,7 +63,11 @@ public class CalcTrajectory : MonoBehaviour
         if (launch1)
         {
             if (!CheckIsTravelling(ViableCulprits1))
+            {
                 SetCanShoot(ViableCulprits1);
+                currIter1++;
+                iter1.text = "1st Window: " + currIter1;
+            }
         }
 
         if (CheckIsWindowDone(ViableCulprits1, 0) && !launch2 && launch1)
@@ -66,7 +80,11 @@ public class CalcTrajectory : MonoBehaviour
         if (launch2)
         {
             if (!CheckIsTravelling(ViableCulprits2))
+            {
                 SetCanShoot(ViableCulprits2);
+                currIter2++;
+                iter2.text = "2nd Window: " + currIter2;
+            }
         }
 
         if (CheckIsWindowDone(ViableCulprits2, 1) && launch2 && !launch1)

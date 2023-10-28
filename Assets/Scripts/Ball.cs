@@ -139,7 +139,7 @@ public class Ball : MonoBehaviour
 
 
 
-            Debug.Log("HIT TARGET: " + target);
+            //Debug.Log("HIT TARGET: " + target);
 
             HitBall HB = new HitBall();
             HB.RelatedHumanGameObject = transform.parent.gameObject;
@@ -191,7 +191,7 @@ public class Ball : MonoBehaviour
 
 
 
-            Debug.Log("HIT TARGET: " + target);
+            //Debug.Log("HIT TARGET: " + target);
 
             HitBall HB = new HitBall();
             HB.RelatedHumanGameObject = transform.parent.gameObject;
