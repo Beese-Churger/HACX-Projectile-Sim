@@ -50,6 +50,8 @@ public class SettingsMenu : MonoBehaviour
     public GameObject[] Roofs;
     public float OriginalRoofY;
     //bool flip = false;
+
+    public GameObject BuildingUI;
     public void OnFloorSliderChange()
     {
         foreach (GameObject GO in FloorsAdded) Destroy(GO);
