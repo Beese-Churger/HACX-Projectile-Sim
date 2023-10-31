@@ -18,10 +18,13 @@ Link to website: https://hacx.sg/challenge/
 # Important Links
 | Name  | Link |
 | ------------- | ------------- |
-| Product Specification Document | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc/edit?usp=sharing  |
-| Pitch Deck  | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc/edit?usp=sharing  |
+| Product Specification Document | https://docs.google.com/document/d/1GP4JbiivC8ZwdoyXQaq4u85IqZsOsKUDS-eN1lzoESc |
+| Pitch Deck  | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc |
 
 # Getting Started
+## Running on web
+1. Go to github pages and run the webgl
+
 ## Windows
 1. Go to releases and download ProjectileSimulator.zip
 2. Click on ```Projectile Simulator.exe``` to run the game
