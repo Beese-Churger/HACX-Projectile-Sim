@@ -55,6 +55,8 @@ public class MainGameManager : MonoBehaviour
     public CalcTrajectory CT;
     public TMP_Text highestAcc;
 
+    public WeightSettingsManager WSM;
+
     // This function resets GameObject states before restarting simulation
 
     public void TransitionToEditBuilding()
@@ -425,7 +427,6 @@ public class HitBall
     public int WindowHit;
     public float DistanceFromCenterW1, DistanceFromCenterW2;
     public float Accuracy;
-
     //public float Angle1;
     //public float Angle2;
     public Vector3 Hitposition;
@@ -446,8 +447,8 @@ public class HitBall
         {
 
             //Accuracy = (DistanceFromCenterW1 + DistanceFromCenterW2) / 2;
-            float window1 = (((90 - shooter.angle1) / 90) + (shooter.hitSpeed1 / SettingsMenu.instance.GetInitVel())) * 0.5f;
-            float window2 = (((90 - shooter.angle2) / 90) + (shooter.hitSpeed2 / SettingsMenu.instance.GetInitVel())) * 0.5f;
+            float window1 = ((((90 - shooter.angle1)*WeightSettingsManager.instance.AOIWeight) / 90) + ((shooter.hitSpeed1 * WeightSettingsManager.instance.VOIWeight) / SettingsMenu.instance.GetInitVel())) * 0.5f;
+            float window2 = ((((90 - shooter.angle2)*WeightSettingsManager.instance.AOIWeight) / 90) + ((shooter.hitSpeed2 * WeightSettingsManager.instance.VOIWeight) / SettingsMenu.instance.GetInitVel())) * 0.5f;
             //Debug.Log(window1 + " " + window2);
             Accuracy = ((window1 + window2) * 0.5f) * 100;
         }

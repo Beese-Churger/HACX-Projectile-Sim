@@ -40,7 +40,7 @@ public class SettingsMenu : MonoBehaviour
     private float windSpeed = 0f;
     private Vector3 windDirection = new Vector3(-1, 0, 0);
     public Slider AccuracyLimitSlider;
-    float LowestAccuracy = 100f, HighestAccuracy = 0f;
+    public float LowestAccuracy = 100f, HighestAccuracy = 0f;
 
     public Camera freeCam;
 
@@ -197,6 +197,19 @@ public class SettingsMenu : MonoBehaviour
 
         ChangeAllSliderValueTexts();
     }
+    public void ReaccurateAndReHM()
+    {
+        foreach(HitBall HB in MainGameManager.instance.RegisteredHitsOnBothWindows)
+        {
+            HB.CalculateAccuracy();
+        }
+        CalculateAccuracies();
+        if (HMIsOn)
+        {
+            HMIsOn = false;
+            ToggleHM();
+        }
+    }
 
     public void ToggleAccuracy()
     {
@@ -220,6 +233,8 @@ public class SettingsMenu : MonoBehaviour
 
     public void CalculateAccuracies()
     {
+        LowestAccuracy = 100;
+        HighestAccuracy = 0;
         foreach (HitBall A in MainGameManager.instance.RegisteredHitsOnBothWindows)
         {
             GameObject B = A.RelatedHumanGameObject;
