@@ -1537,7 +1537,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -38137,10 +38137,10 @@ MonoBehaviour:
     the slider towards the Velocity of Impact (VOI) increases the influence of velocity
     in the calculations.
 
-    
 
-    For example, setting a VOI of 0 and an AOI
-    of 2 means that the velocity of impact will have no impact on the accuracy calculation,
+
+    For example, setting a VOI of 0 and an AOI of 2 means
+    that the velocity of impact will have no impact on the accuracy calculation,
     and the Angle of impact have double the weightage in calculations, making shots
     landed at smaller angles have a higher overall accuracy.'
   m_isRightToLeft: 0
