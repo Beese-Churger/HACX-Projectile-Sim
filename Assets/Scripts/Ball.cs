@@ -27,15 +27,15 @@ public class Ball : MonoBehaviour
         islaunched = true;
         targets = MainGameManager.instance.GetWindows();
         rbody = GetComponent<Rigidbody>();
-        distToGround = GetComponent<SphereCollider>().bounds.extents.y;
+        //distToGround = GetComponent<SphereCollider>().bounds.extents.y;
 
         dragCoefficient = 0.1f;
         // get drag coefficient 
 
-        r = distToGround;
+        r = transform.localScale.y * 0.5f;
         volume = (4 * Mathf.PI * r * r * r) / 3;
-        rbody.mass = density * volume; // in grams
-
+        rbody.mass =( density * volume); // in grams
+       
         area = 2 * Mathf.PI * r * r;
 
         initialVel = SettingsMenu.instance.GetInitVel();
@@ -81,11 +81,20 @@ public class Ball : MonoBehaviour
 
     void SimulateInRealTime(float dt)
     {
-        Vector3 direction = -rbody.velocity.normalized;
-        float velocity = rbody.velocity.magnitude;
-        var forceAmount = (p * velocity * velocity * dragCoefficient * area) * 0.5f;
-        // Debug.Log("drag: " + forceAmount);
-        rbody.AddForce(direction * forceAmount);
+        //Vector3 direction = -rbody.velocity.normalized;
+        //float velocity = rbody.velocity.magnitude;
+        //var forceAmount = (p * velocity * velocity * dragCoefficient * area) * 0.5f;
+        //rbody.AddForce(direction * forceAmount);
+
+
+
+        Vector3 dragForce = -0.5f * (p * rbody.velocity.sqrMagnitude * dragCoefficient * area * rbody.velocity.normalized);
+        rbody.AddForce(dragForce, ForceMode.Force);
+
+        // Calculate the relative velocity of the ball with respect to the wind
+        //Vector3 relativeVelocity = rbody.velocity - SettingsMenu.instance.GetWindDirection() * SettingsMenu.instance.GetWindSpeed();
+        //Vector3 dragForce = -0.5f * p * dragCoefficient * area * relativeVelocity.sqrMagnitude * relativeVelocity.normalized;
+        //rbody.AddForce(dragForce, ForceMode.Force);
     }
 
     public void Simulate()

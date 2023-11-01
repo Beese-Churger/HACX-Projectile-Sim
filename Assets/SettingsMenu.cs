@@ -13,6 +13,7 @@ public class SettingsMenu : MonoBehaviour
     public Slider InitialVelocitySlider;
     public Slider SimulationSpeedSlider;
     public Slider MaxIterationsSlider;
+    public Slider WindSpeedSlider;
 
     public List<AreaSplitManager> SplitManagers = new List<AreaSplitManager>();
     public MainGameManager MGM;
@@ -31,11 +32,13 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("SliderValues")]
     public TMP_Text DragCoeffecientValueText, InitialVelocityValueText;
-    public TMP_Text CalculationDensValueText, SimSpeedValueText, MaxIterationsValueText;
+    public TMP_Text CalculationDensValueText, SimSpeedValueText, MaxIterationsValueText, WindSpeedValueText;
 
     private float drag = 0.47f;
     private int MaxIterations = 10;
     private int InitVel = 70;
+    private float windSpeed = 0f;
+    private Vector3 windDirection = new Vector3(-1, 0, 0);
     public Slider AccuracyLimitSlider;
     float LowestAccuracy = 100f, HighestAccuracy = 0f;
 
@@ -155,7 +158,7 @@ public class SettingsMenu : MonoBehaviour
         DragCoeffecientValueText.text = DragCoefficientSlider.value.ToString("F2");
         SimSpeedValueText.text = SimulationSpeedSlider.value.ToString("F1");
         MaxIterationsValueText.text = ((int)MaxIterationsSlider.value).ToString();
-
+        WindSpeedValueText.text = WindSpeedSlider.value.ToString("F2") + "m/s";
     }
 
 
@@ -284,6 +287,13 @@ public class SettingsMenu : MonoBehaviour
         InitVel = (int)InitialVelocitySlider.value;
         ChangeAllSliderValueTexts();
     }
+
+    public void OnWindSpeedChange()
+    {
+        windSpeed = WindSpeedSlider.value;
+        ChangeAllSliderValueTexts();
+    }
+
     public int GetMaxIterations()
     {
         return MaxIterations;
@@ -296,5 +306,15 @@ public class SettingsMenu : MonoBehaviour
     public int GetInitVel()
     {
         return InitVel;
+    }
+
+    public float GetWindSpeed()
+    {
+        return windSpeed;
+    }
+
+    public Vector3 GetWindDirection()
+    {
+        return windDirection;
     }
 }
