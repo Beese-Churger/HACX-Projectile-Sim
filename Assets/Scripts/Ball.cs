@@ -148,11 +148,13 @@ public class Ball : MonoBehaviour
             {
                 HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
                 shooter.angle1 = Vector3.Angle(vel, -normal);
+                shooter.hitSpeed1 = vel.magnitude;
             }
             else
             {
                 HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
                 shooter.angle2 = Vector3.Angle(vel, -normal);
+                shooter.hitSpeed2 = vel.magnitude;
             }
             HB.CalculateAccuracy();
             HB.Hitposition = transform.position;
@@ -200,11 +202,13 @@ public class Ball : MonoBehaviour
             {
                 HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
                 shooter.angle1 = Vector3.Angle(vel, -normal);
+                shooter.hitSpeed1 = vel.magnitude;
             }
             else
             {
                 HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
                 shooter.angle2 = Vector3.Angle(vel, -normal);
+                shooter.hitSpeed2 = vel.magnitude;
             }
             HB.CalculateAccuracy();
             HB.Hitposition = transform.position;

@@ -23,6 +23,9 @@ public class Culprit : MonoBehaviour
     public float angle1;
     public float angle2;
 
+    public float hitSpeed1;
+    public float hitSpeed2;
+
     public int iterations1;
     public int iterations2;
     public int maxIterations;

@@ -356,6 +356,8 @@ public class MainGameManager : MonoBehaviour
 
     public void SortDuplicateHits()
     {
+        Vector2 MinMaxSpeed1 = Vector2.zero;
+        Vector2 MinMaxSpeed2 = Vector2.zero;
         for (int i = 0; i < RegisteredHits.Count; i++)
         {
             for (int j = i + 1; j < RegisteredHits.Count; j++)
@@ -370,12 +372,33 @@ public class MainGameManager : MonoBehaviour
                         HB.canHitBoth = true;
                         HB.DistanceFromCenterW1 = RegisteredHits[i].DistanceFromCenterW1;
                         HB.DistanceFromCenterW2 = RegisteredHits[j].DistanceFromCenterW2;
+                        Culprit shooter = HB.RelatedHumanGameObject.GetComponent<Culprit>();
+                        //if (MinMaxSpeed1.x == 0)
+                        //    MinMaxSpeed1.x = shooter.hitSpeed1;
+                        //if (MinMaxSpeed2.x == 0)
+                        //    MinMaxSpeed2.x = shooter.hitSpeed2;
+
+                        //MinMaxSpeed1.x = Mathf.Min(MinMaxSpeed1.x, shooter.hitSpeed1);
+                        //MinMaxSpeed1.y = Mathf.Max(MinMaxSpeed1.y, shooter.hitSpeed1);
+
+                        //MinMaxSpeed2.x = Mathf.Min(MinMaxSpeed2.x, shooter.hitSpeed2);
+                        //MinMaxSpeed2.y = Mathf.Max(MinMaxSpeed2.y, shooter.hitSpeed2);
+
                         HB.CalculateAccuracy();
                         RegisteredHitsOnBothWindows.Add(HB);
                     }
                 }
             }
         }
+
+        //float diffBetweenSpeed1 = (MinMaxSpeed1.y - MinMaxSpeed1.x);
+        //float diffBetweenSpeed2 = (MinMaxSpeed2.y - MinMaxSpeed2.x);
+        //foreach (HitBall HB in RegisteredHitsOnBothWindows)
+        //{
+        //    HB.
+        //}
+        //Debug.Log("window1 min max: " + MinMaxSpeed1);
+        //Debug.Log("window2 min max: " + MinMaxSpeed2);
     }
 
     public void EnableFreeCam()
@@ -396,6 +419,7 @@ public class HitBall
     public int WindowHit;
     public float DistanceFromCenterW1, DistanceFromCenterW2;
     public float Accuracy;
+
     //public float Angle1;
     //public float Angle2;
     public Vector3 Hitposition;
@@ -405,18 +429,21 @@ public class HitBall
         if (WindowHit == 0)
         {
             //Accuracy = DistanceFromCenterW1;
-            Accuracy = ((90 - shooter.angle1) / 90) * 100;
+            Accuracy = 100 * ((((90 - shooter.angle1) / 90) + (shooter.hitSpeed1 / SettingsMenu.instance.GetInitVel())) * 0.5f);
         }
         else if(WindowHit == 1)
         {
             //Accuracy = DistanceFromCenterW2;
-            Accuracy = ((90 - shooter.angle2) / 90) * 100;
+            Accuracy = 100 * ((((90 - shooter.angle2) / 90) + (shooter.hitSpeed2 / SettingsMenu.instance.GetInitVel())) * 0.5f); ;
         }
         else if(WindowHit == 2)
         {
 
             //Accuracy = (DistanceFromCenterW1 + DistanceFromCenterW2) / 2;
-            Accuracy = ((90 - ((shooter.angle1 + shooter.angle2) * 0.5f)) / 90) * 100;
+            float window1 = (((90 - shooter.angle1) / 90) + (shooter.hitSpeed1 / SettingsMenu.instance.GetInitVel())) * 0.5f;
+            float window2 = (((90 - shooter.angle2) / 90) + (shooter.hitSpeed2 / SettingsMenu.instance.GetInitVel())) * 0.5f;
+            //Debug.Log(window1 + " " + window2);
+            Accuracy = ((window1 + window2) * 0.5f) * 100;
         }
 
         RelatedHumanGameObject.GetComponent<Culprit>().AccuracyText.text = Accuracy.ToString("F1");
