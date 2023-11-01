@@ -16,6 +16,7 @@ public class MainGameManager : MonoBehaviour
     public AnimationClip CameraToMainGameTransition;
     public AnimationClip CameraToSettingsTransition;
     public AnimationClip CameraToOverviewTransition;
+    public AnimationClip CameraToBuildingEditorTransition;
     public float TransitionSpeed;
     [Header("MainMenuElements")]
     public GameObject MainMenuUI;
@@ -56,6 +57,10 @@ public class MainGameManager : MonoBehaviour
 
     // This function resets GameObject states before restarting simulation
 
+    public void TransitionToEditBuilding()
+    {
+        CameraAnimator.CrossFade(CameraToBuildingEditorTransition.name, 0.05f);
+    }
     public void ResetWholeScene()
     {
         SceneManager.LoadScene(0);
@@ -84,6 +89,7 @@ public class MainGameManager : MonoBehaviour
 
         // Start the next game
         StartGame();
+        ResetWholeScene();
     }
 
     // This function inverts the current state of the buildings

@@ -49,6 +49,18 @@ public class SettingsMenu : MonoBehaviour
     public List<GameObject> FloorsAdded = new List<GameObject>();
     public GameObject[] Roofs;
     public float OriginalRoofY;
+
+    public Slider BuildingDistanceslider;
+    public Transform TargetBuilding;
+    public TMP_Text CurrentDistanceText;
+
+    public void OnEditBuildingDistance()
+    {
+        Vector3 pos = TargetBuilding.transform.position;
+        pos.z = -BuildingDistanceslider.value;
+        CurrentDistanceText.text = BuildingDistanceslider.value.ToString();
+        TargetBuilding.transform.position = pos;
+    }
     //bool flip = false;
 
     public GameObject BuildingUI;
@@ -66,6 +78,8 @@ public class SettingsMenu : MonoBehaviour
                 Position.y = (float)T.position.y + i * 3.6f;
                 GO.transform.position = Position;
                 FloorsAdded.Add(GO);
+                AreaSplitManager ASM = GO.GetComponentInChildren<AreaSplitManager>();
+                ASM.row = i + 7;
             }
         }
 
@@ -75,6 +89,9 @@ public class SettingsMenu : MonoBehaviour
             vec.y = OriginalRoofY + (floorsToAdd) * 3.6f;
             GO.transform.position = vec;
         }
+
+        OnSplitManagerSliderChange();
+       // MGM.ResetCulprits();
     }
 
     public void CleanUp()
