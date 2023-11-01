@@ -322,7 +322,7 @@ public class MainGameManager : MonoBehaviour
         M.EnableKeyword("_EMISSION");
         //before we can set the color
         M.SetColor("_EmissionColor", Color.cyan);
-        
+            
     }
 
     public void ToggleSecondWindowHavers()

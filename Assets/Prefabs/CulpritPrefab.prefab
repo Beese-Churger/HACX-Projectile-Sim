@@ -93,6 +93,8 @@ MonoBehaviour:
   angle: 0
   angle1: 0
   angle2: 0
+  hitSpeed1: 0
+  hitSpeed2: 0
   iterations1: 0
   iterations2: 0
   maxIterations: 0
