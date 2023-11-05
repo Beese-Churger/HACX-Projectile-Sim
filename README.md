@@ -17,7 +17,7 @@ Link to website: https://hacx.sg/challenge/
 
 # Source Files download instructions
 Download the source files and open them using Unity 2021.3.17f1. Any other version may cause errors in the code.
-You can download that specific version of unity through the [Unity Dowload Archive](https://unity.com/releases/editor/archive)
+You can download that specific version of unity through the [Unity Download Archive](https://unity.com/releases/editor/archive)
 
 # Important Links
 | Name  | Link |
