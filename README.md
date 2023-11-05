@@ -21,7 +21,8 @@ Link to website: https://hacx.sg/challenge/
 | Product Specification Document | https://docs.google.com/document/d/1GP4JbiivC8ZwdoyXQaq4u85IqZsOsKUDS-eN1lzoESc |
 | Pitch Deck  | https://docs.google.com/presentation/d/149ARX-utGCghXqUkWzMltY3sPY9hgFJNCz3hXsU0elc |
 | WebGL Repository | https://github.com/onebignick/hacx-projectile-sim-webgl |
-| WebGL Website | 18.140.238.153:5000 |
+| WebGL Website | [AWS Cloud Hosted(Depreciated due to budget constraints)](18.140.238.153:5000) |
+| WebGL Website #2 | [Github Pages](https://kinneh04.github.io) |
 
 # Getting Started
 Note: Mac and Linux are one version behind and untested since we developed the application on Windows
