@@ -15,6 +15,9 @@ Explore potential methods of accurately estimating the path of a projectile laun
 
 Link to website: https://hacx.sg/challenge/
 
+# Source Files download instructions
+Download the source files and open them using Unity 2021.3.17f1. Any other version may cause errors in the code.
+
 # Important Links
 | Name  | Link |
 | ------------- | ------------- |
